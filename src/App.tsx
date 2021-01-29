@@ -1,11 +1,12 @@
 import React from 'react';
 import Header from './components/Header';
-import Companies from './pages/Companies';
+import Router from './Router';
+import './index.css';
 
 const App: React.FC = () => (
   <div>
     <Header />
-    <Companies />
+    <Router />
   </div>
 );
 
