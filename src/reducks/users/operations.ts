@@ -1,7 +1,36 @@
 import { push } from 'connected-react-router';
 import { SignUpType } from './types';
 import { auth, db, FirebaseTimestamp } from '../../firebase/index';
+import { signInAction } from './actions';
 
+// * 認証のリッスン
+export const listenAuthState = () => async (dispatch: any) => auth.onAuthStateChanged((user) => {
+  if (user) { // ユーザーが認証されている場合
+    const { uid } = user;
+
+    db.collection('users')
+      .doc(uid)
+      .get()
+      .then((snapshot) => {
+        const data = snapshot.data();
+
+        if (data) { // not undefind
+          dispatch(
+            signInAction({
+              isSignedIn: true,
+              uid: data.uid,
+              email: data.email,
+              username: data.username,
+            }),
+          );
+        }
+      });
+  } else { // ユーザーが認証されていない場合
+    dispatch(push('/signin'));
+  }
+});
+
+// * 会員登録
 export const signUp = ({
   username, email, password, confirmPassword,
 }: SignUpType) => async (dispatch: any) => {
@@ -34,7 +63,6 @@ export const signUp = ({
           created_at: timestamp,
           updated_at: timestamp,
           email,
-          role: 'customer',
           uid,
           username,
         };
@@ -48,5 +76,3 @@ export const signUp = ({
       }
     });
 };
-
-export default signUp;

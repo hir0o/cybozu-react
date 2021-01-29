@@ -1,5 +1,6 @@
 export type UserType = {
   username: string,
+  email: string,
   isSignedIn: boolean,
   uid: string,
 };

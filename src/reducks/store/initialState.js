@@ -56,6 +56,7 @@ const initialState = {
   users: {
     isSignedIn: false,
     uid: '',
+    email: '',
     username: '',
   },
 };
