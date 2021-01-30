@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signUp } from '../reducks/users/operations';
+import { TextInput } from '../components/UiKid/index';
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -38,40 +39,43 @@ const SignUp = () => {
   );
 
   return (
-    <div className="c-section-container">
-      <h2 className="u-text__headline u-text-center">アカウント登録</h2>
-      <div className="module-spacer--medium" />
-      <input
-        placeholder="ユーザー名"
-        required
-        value={username}
-        type="text"
-        onChange={inputUsername}
-      />
-      <input
-        placeholder="メールアドレス"
-        required
-        value={email}
-        type="text"
-        onChange={inputEmail}
-      />
-      <input
-        placeholder="パスワード"
-        required
-        value={password}
-        type="password"
-        onChange={inputPassword}
-      />
-      <input
-        placeholder="パスワード（確認）"
-        required
-        value={confirmPassword}
-        type="password"
-        onChange={inputConfirmPassword}
-      />
-      <div className="module-spacer--medium" />
-      <div className="center">
+    <div className="max-w-xl mx-auto mt-8 px-4 md:px-0">
+      <h2 className="text-2xl">アカウント登録</h2>
+      <div className="grid grid-cols-1 gap-6 mt-8">
+        <TextInput
+          placeholder=""
+          label="ユーザー名"
+          id="username"
+          value={username}
+          inputType="text"
+          onChange={inputUsername}
+        />
+        <TextInput
+          placeholder=""
+          label="メールアドレス"
+          id="email"
+          value={email}
+          inputType="text"
+          onChange={inputEmail}
+        />
+        <TextInput
+          placeholder=""
+          label="パスワード"
+          id="password"
+          value={password}
+          inputType="password"
+          onChange={inputPassword}
+        />
+        <TextInput
+          placeholder=""
+          label="パスワード（確認）"
+          id="confirmPassword"
+          value={confirmPassword}
+          inputType="password"
+          onChange={inputConfirmPassword}
+        />
         <button
+          className="w-full bg-green-500 text-white text-bold raund-md py-2 px-3 rounded-md"
           onClick={() => dispatch(signUp({
             username, email, password, confirmPassword,
           }))}
