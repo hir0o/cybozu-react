@@ -23,3 +23,12 @@ export const signUpAction = (userState: UserType) => ({
 });
 
 // ログアウト
+export const SIGN_OUT = 'SIGN_OUT';
+export const signOutAction = () => ({
+  type: 'SIGN_OUT',
+  payload: {
+    isSignedIn: false,
+    uid: '',
+    username: '',
+  },
+});

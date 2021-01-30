@@ -1,7 +1,10 @@
 import { push } from 'connected-react-router';
-import { SignUpType, SignIpType, UserType } from './types';
+import { SignUpType, SignIpType } from './types';
 import { auth, db, FirebaseTimestamp } from '../../firebase/index';
-import { signInAction, signUpAction } from './actions';
+import { signInAction, signUpAction, signOutAction } from './actions';
+
+// * 参考
+// * https://firebase.google.com/docs/auth/web/password-auth?hl=ja
 
 // 認証のリッスン
 export const listenAuthState = () => async (dispatch: any) => auth.onAuthStateChanged((user) => {
@@ -84,7 +87,7 @@ export const signIn = ({
   if (email === '' || password === '') {
     return false;
   }
-  auth.signInWithEmailAndPassword(email, password).then((result) => {
+  return auth.signInWithEmailAndPassword(email, password).then((result) => {
     const { user } = result;
 
     if (user) {
@@ -109,5 +112,13 @@ export const signIn = ({
           }
         });
     }
+  });
+};
+
+// ログアウト
+export const signOut = () => async (dispatch: any) => {
+  auth.signOut().then(() => {
+    dispatch(signOutAction());
+    dispatch(push('/'));
   });
 };

@@ -19,7 +19,7 @@ export type SignIpType = {
   password: string,
 };
 
-export type ActionStringType = 'SIGN_IN' | 'SIGN_UP';
+export type ActionStringType = 'SIGN_IN' | 'SIGN_UP' | 'SIGN_OUT';
 
 export type ActionType = {
   type: ActionStringType,
