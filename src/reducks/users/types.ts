@@ -5,11 +5,18 @@ export type UserType = {
   uid: string,
 };
 
+// 新規登録
 export type SignUpType = {
   username: string,
   email: string,
   password: string,
   confirmPassword: string,
+};
+
+// ログイン
+export type SignIpType = {
+  email: string,
+  password: string,
 };
 
 export type ActionStringType = 'SIGN_IN' | 'SIGN_UP';

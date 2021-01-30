@@ -1,9 +1,9 @@
 import { push } from 'connected-react-router';
-import { SignUpType } from './types';
+import { SignUpType, SignIpType, UserType } from './types';
 import { auth, db, FirebaseTimestamp } from '../../firebase/index';
-import { signInAction } from './actions';
+import { signInAction, signUpAction } from './actions';
 
-// * 認証のリッスン
+// 認証のリッスン
 export const listenAuthState = () => async (dispatch: any) => auth.onAuthStateChanged((user) => {
   if (user) { // ユーザーが認証されている場合
     const { uid } = user;
@@ -30,7 +30,7 @@ export const listenAuthState = () => async (dispatch: any) => auth.onAuthStateCh
   }
 });
 
-// * 会員登録
+// 会員登録
 export const signUp = ({
   username, email, password, confirmPassword,
 }: SignUpType) => async (dispatch: any) => {
@@ -66,7 +66,6 @@ export const signUp = ({
           uid,
           username,
         };
-
         db.collection('users')
           .doc(uid)
           .set(userInitialData)
@@ -75,4 +74,40 @@ export const signUp = ({
           });
       }
     });
+};
+
+// ログイン
+export const signIn = ({
+  email, password,
+}: SignIpType) => async (dispatch: any) => {
+  // バリデーション
+  if (email === '' || password === '') {
+    return false;
+  }
+  auth.signInWithEmailAndPassword(email, password).then((result) => {
+    const { user } = result;
+
+    if (user) {
+      const { uid } = user;
+
+      db.collection('users')
+        .doc(uid)
+        .get()
+        .then((snapshot) => {
+          const data = snapshot.data();
+          // ? この辺で型チェック？
+          if (data) {
+            dispatch(
+              signUpAction({
+                isSignedIn: true,
+                uid: data.uid,
+                email: data.email,
+                username: data.username,
+              }),
+            );
+            dispatch(push('/'));
+          }
+        });
+    }
+  });
 };

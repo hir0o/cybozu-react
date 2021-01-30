@@ -9,7 +9,11 @@ const UsersReducer = (state = initialState.users, action: ActionType) => {
         ...state,
         ...action.payload,
       };
-
+    case Actions.SIGN_UP:
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }
