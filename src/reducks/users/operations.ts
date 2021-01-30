@@ -73,6 +73,7 @@ export const signUp = ({
           .doc(uid)
           .set(userInitialData)
           .then(() => {
+            dispatch(listenAuthState());
             dispatch(push('/'));
           });
       }
