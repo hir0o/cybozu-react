@@ -4,6 +4,7 @@ import HTMLReactParser from 'html-react-parser';
 import { CompanyType } from '../reducks/companies/types';
 import { db } from '../firebase/index';
 import { TextInput } from '../components/UiKid/index';
+import { SectionBox, CommentItem } from '../components/companies/index';
 
 const CompanyDetail: React.FC = () => {
   const selector = useSelector((state) => state);
@@ -28,7 +29,7 @@ const CompanyDetail: React.FC = () => {
 
   return (
     <div className="mx-4 mb-8">
-      <div className="max-w-4xl mx-auto mt-8 px-4 shadow-sm bg-white p-4 rounded-md border-t-4 border-blue-400 border-solid">
+      <SectionBox>
         <div className="flex items-center">
           <div className="w-24">
             {company.profileImage ? (
@@ -40,9 +41,8 @@ const CompanyDetail: React.FC = () => {
             <p className="bg-gray-500 text-white w-12 text-center rounded-md mt-2 text-sm">{company.industry}</p>
           </div>
         </div>
-      </div>
-      <div className="max-w-4xl mx-auto mt-8 px-4 shadow-sm bg-white p-4 rounded-md border-t-4 border-blue-400 border-solid">
-        <h2 className="text-xl border-b-2 border-blue-300 border-solid pb-4">企業概要</h2>
+      </SectionBox>
+      <SectionBox title="企業概要">
         <div className="grid md:grid-cols-2 grid-cols-1 mt-4 gap-4">
           <div>
             <h3 className="text-sm text-gray-400">住所</h3>
@@ -67,59 +67,22 @@ const CompanyDetail: React.FC = () => {
             <p className="text-sm mt-3">300人</p>
           </div>
         </div>
-      </div>
-      <div className="max-w-4xl mx-auto mt-8 px-4 shadow-sm bg-white p-4 rounded-md border-t-4 border-blue-400 border-solid">
-        <h2 className="text-xl border-b-2 border-blue-300 border-solid pb-4">
-          企業紹介
-        </h2>
+      </SectionBox>
+      <SectionBox title="企業紹介">
         <p className="leading-6 text-sm text-gray-600 mt-3">
           {returnCodeToBr(company.description)}
         </p>
-      </div>
-      <div className="max-w-4xl mx-auto mt-8 px-4 shadow-sm bg-white p-4 rounded-md border-t-4 border-blue-400 border-solid">
-        <h2 className="text-xl border-b-2 border-blue-300 border-solid pb-4">
-          コメント
-        </h2>
-        <div className="grid grid-cols-1 gap-2 mt-4">
-          <div className="flex items-center border-gray-200 border-b border-solid pb-2">
-            <img className="w-12 h-12 flex-shrink-1" src="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_yellow.png" alt="プロフィール画像" />
-            <div className="ml-3">
-              <p className="text-sm">hiroyuki</p>
-              <p className="flex-shrink leading-5 text-sm text-gray-600">
-                コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．
-                コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．
-                コメントが入ります．コメントが入ります．コメントが入ります．
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center border-gray-200 border-b border-solid pb-2">
-            <img className="w-12 h-12 flex-shrink-1" src="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_yellow.png" alt="プロフィール画像" />
-            <div className="ml-3">
-              <p className="text-sm">hiroyuki</p>
-              <p className="flex-shrink leading-5 text-sm text-gray-600">
-                コメントが入ります．コメントが入ります．
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center border-gray-200 border-b border-solid pb-2">
-            <img className="w-12 h-12 flex-shrink-1" src="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_yellow.png" alt="プロフィール画像" />
-            <div className="ml-3">
-              <p className="text-sm">hiroyuki</p>
-              <p className="flex-shrink leading-5 text-sm text-gray-600">
-                コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．
-                コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．コメントが
-                入ります．コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．コメントが入り
-                ます．コメントが入ります．コメントが入ります．コメントが入ります
-                ．コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．コメントが入ります．
-              </p>
-            </div>
-          </div>
+      </SectionBox>
+      <SectionBox title="コメント">
+        <div className="grid grid-cols-1 gap-4 mt-4">
+          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
+          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
+          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
+          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
+          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
         </div>
-      </div>
-      <div className="max-w-4xl mx-auto mt-8 px-4 shadow-sm bg-white p-4 rounded-md border-t-4 border-blue-400 border-solid">
-        <h2 className="text-xl border-b-2 border-blue-300 border-solid pb-4">
-          コメントを残す
-        </h2>
+      </SectionBox>
+      <SectionBox title="コメントを残す">
         <p className="leading-6 text-sm text-gray-600 mt-3">
           <form>
             <TextInput inputType="textarea" placeholder="コメントを入力してください" className="text-sm" />
@@ -136,7 +99,7 @@ const CompanyDetail: React.FC = () => {
             </div>
           </form>
         </p>
-      </div>
+      </SectionBox>
     </div>
   );
 };
