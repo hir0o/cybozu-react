@@ -1,22 +1,42 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
+import { CompanyType } from '../../reducks/companies/types';
+
+const MAX_LENGTH = 55;
 
 type Props = {
-  companyName: string,
-  description: string,
+  company: CompanyType
 };
 
-const Card: React.FC<Props> = ({ companyName, description }: Props) => (
-  <section>
-    <div className="flex shadow-md rounded-md p-4 hover:bg-gray-50 cursor-pointer">
-      <p>画像</p>
-      <div>
-        <h3>{companyName}</h3>
-        <p>
-          {description}
-        </p>
+const Card: React.FC<Props> = ({ company }: Props) => {
+  const dispatch = useDispatch();
+
+  // 文章を省略する
+  const omitText = (text: string): string => {
+    if (text.length < MAX_LENGTH || text === undefined) {
+      return text;
+    }
+    return `${text.substr(0, MAX_LENGTH)}...`;
+  };
+
+  return (
+    <button type="button" onClick={() => dispatch(push(`/companies/${company.id}`))} className="bg-white rounded-md shadow-sm hover:shadow-lg transition-shadow text-left border-t-4 border-blue-400 border-solid">
+      <div className="flex p-4 items-center cursor-pointer">
+        <div className="w-24 flex-shrink-0">
+          {company.profileImage ? (
+            <img src={company.profileImage.path} alt="" className="w-full" />
+          ) : ''}
+        </div>
+        <div className="flex-shrink ml-3">
+          <h3>{company.name}</h3>
+          <p className="leading-6 text-sm text-gray-600 mt-3">
+            {omitText(company.description)}
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </button>
+  );
+};
 
 export default Card;

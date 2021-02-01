@@ -31,7 +31,7 @@ const Auth: React.FC = ({ children }) => {
 };
 
 Auth.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default Auth;
