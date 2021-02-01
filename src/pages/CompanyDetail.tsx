@@ -71,7 +71,7 @@ const CompanyDetail: React.FC = () => {
         <h2 className="text-xl border-b-2 border-blue-300 border-solid pb-4">
           企業紹介
         </h2>
-        <p className="leading-6 text-sm text-gray-600">
+        <p className="leading-6 text-sm text-gray-600 mt-3">
           {returnCodeToBr(company.description)}
         </p>
       </div>
