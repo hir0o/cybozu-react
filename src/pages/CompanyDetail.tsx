@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import HTMLReactParser from 'html-react-parser';
 import { CompanyType } from '../reducks/companies/types';
 import { db } from '../firebase/index';
+import { TextInput } from '../components/UiKid/index';
 
 const CompanyDetail: React.FC = () => {
   const selector = useSelector((state) => state);
@@ -114,6 +115,27 @@ const CompanyDetail: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="max-w-4xl mx-auto mt-8 px-4 shadow-sm bg-white p-4 rounded-md border-t-4 border-blue-400 border-solid">
+        <h2 className="text-xl border-b-2 border-blue-300 border-solid pb-4">
+          コメントを残す
+        </h2>
+        <p className="leading-6 text-sm text-gray-600 mt-3">
+          <form>
+            <TextInput inputType="textarea" placeholder="コメントを入力してください" className="text-sm" />
+            <div className="text-center mt-3">
+              <button
+                className="px-8 bg-blue-400 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-blue-300"
+                onClick={() => dispatch(signUp({
+                  username, email, password, confirmPassword,
+                }))}
+                type="button"
+              >
+                投稿する
+              </button>
+            </div>
+          </form>
+        </p>
       </div>
     </div>
   );

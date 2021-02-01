@@ -21,7 +21,7 @@ const Card: React.FC<Props> = ({ company }: Props) => {
   };
 
   return (
-    <button type="button" onClick={() => dispatch(push(`/companies/${company.id}`))} className="bg-white rounded-md hover:bg-gray-50 shadow-md text-left border-t-4 border-blue-400 border-solid">
+    <button type="button" onClick={() => dispatch(push(`/companies/${company.id}`))} className="bg-white rounded-md shadow-sm hover:shadow-lg transition-shadow text-left border-t-4 border-blue-400 border-solid">
       <div className="flex p-4 items-center cursor-pointer">
         <div className="w-24 flex-shrink-0">
           {company.profileImage ? (
