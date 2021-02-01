@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import HTMLReactParser from 'html-react-parser';
+import { RouteComponentProps } from 'react-router-dom';
 import { CompanyType } from '../reducks/companies/types';
 import { db } from '../firebase/index';
 import { TextInput } from '../components/UiKid/index';
 import { SectionBox, CommentItem } from '../components/companies/index';
 
-const CompanyDetail: React.FC = () => {
-  const selector = useSelector((state) => state);
-  const path = selector.router.location.pathname;
-  const id = path.split('/companies/')[1];
-  const [company, setCompany] = useState<CompanyType>({});
+type Prop = {} & RouteComponentProps<{id: string}>;
+
+const CompanyDetail: React.FC<Prop> = ({ match }) => {
+  const { id } = match.params;
+  const [company, setCompany] = useState<CompanyType>({} as CompanyType);
 
   useEffect(() => {
     db.collection('companies').doc(id).get()
@@ -83,22 +83,25 @@ const CompanyDetail: React.FC = () => {
         </div>
       </SectionBox>
       <SectionBox title="コメントを残す">
-        <p className="leading-6 text-sm text-gray-600 mt-3">
-          <form>
-            <TextInput inputType="textarea" placeholder="コメントを入力してください" className="text-sm" />
-            <div className="text-center mt-3">
-              <button
-                className="px-8 bg-blue-400 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-blue-300"
-                onClick={() => dispatch(signUp({
-                  username, email, password, confirmPassword,
-                }))}
-                type="button"
-              >
-                投稿する
-              </button>
-            </div>
-          </form>
-        </p>
+        <form>
+          <TextInput
+            inputType="textarea"
+            placeholder="コメントを入力してください"
+            className="text-sm"
+            value="dummy"
+            id="dummy"
+            onChange={() => console.log('aa')}
+          />
+          <div className="text-center mt-3">
+            <button
+              className="px-8 bg-blue-400 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-blue-300"
+              onClick={() => console.log('ダミー')}
+              type="button"
+            >
+              投稿する
+            </button>
+          </div>
+        </form>
       </SectionBox>
     </div>
   );

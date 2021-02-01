@@ -1,19 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-const propType = {
-  inputType: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  className: PropTypes.string,
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-};
-
-const defaultProps = {
-  className: '',
-};
 
 type Props = {
   inputType: string,
@@ -21,7 +6,7 @@ type Props = {
   value: string,
   className?: string,
   id: string,
-  label: string,
+  label?: string,
   onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 };
 
@@ -54,8 +39,5 @@ const TextInput: React.FC<Props> = ({
     )}
   </div>
 );
-
-TextInput.propTypes = propType;
-TextInput.defaultProps = defaultProps;
 
 export default TextInput;

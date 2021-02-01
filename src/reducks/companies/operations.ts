@@ -1,5 +1,6 @@
 import { db } from '../../firebase/index';
 import { fetchCompaniesAction } from './actions';
+import { CompanyType } from './types';
 
 const companiesRef = db.collection('companies');
 
@@ -7,13 +8,12 @@ const fetchCompanies = () => async (dispatch: any) => {
   // TODO: 降順で取得する
   companiesRef.get()
     .then((snapshots) => {
-      const companyList = []; // TODO: anyになっちゃってる
+      const companyList: CompanyType[] = [];
       // TODO: mapとかを使った方がいい
       snapshots.forEach((snapshot) => {
-        const product = snapshot.data();
-        companyList.push(product);
+        const company: CompanyType = snapshot.data() as CompanyType; // TODO: 無理やり
+        companyList.push(company);
       });
-      console.log(companyList);
 
       dispatch(fetchCompaniesAction(companyList));
     });
