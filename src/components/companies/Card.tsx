@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
-import HTMLReactParser from 'html-react-parser';
 import { CompanyType } from '../../reducks/companies/types';
+
+const MAX_LENGTH = 55;
 
 type Props = {
   company: CompanyType
@@ -10,21 +11,27 @@ type Props = {
 
 const Card: React.FC<Props> = ({ company }: Props) => {
   const dispatch = useDispatch();
-  const returnCodeToBr = (text: string) => {
-    if (text === '') {
+
+  // 文章を省略する
+  const omitText = (text: string): string => {
+    if (text.length < MAX_LENGTH || text === undefined) {
       return text;
     }
-    return HTMLReactParser(text.replace(/\r?\n/g, '<br/>'));
+    return `${text.substr(0, MAX_LENGTH)}...`;
   };
 
   return (
-    <button type="button" onClick={() => dispatch(push(`/companies/${company.id}`))} className="bg-white rounded-md hover:bg-gray-50 shadow-md">
-      <div className="flex p-4 cursor-pointer">
-        <p>画像</p>
-        <div>
+    <button type="button" onClick={() => dispatch(push(`/companies/${company.id}`))} className="bg-white rounded-md hover:bg-gray-50 shadow-md text-left border-t-4 border-blue-400 border-solid">
+      <div className="flex p-4 items-center cursor-pointer">
+        <div className="w-24 flex-shrink-0">
+          {company.profileImage ? (
+            <img src={company.profileImage.path} alt="" className="w-full" />
+          ) : ''}
+        </div>
+        <div className="flex-shrink ml-3">
           <h3>{company.name}</h3>
-          <p>
-            {returnCodeToBr(company.description)}
+          <p className="leading-6 text-sm text-gray-600 mt-3">
+            {omitText(company.description)}
           </p>
         </div>
       </div>

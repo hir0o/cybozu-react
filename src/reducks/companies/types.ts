@@ -6,12 +6,12 @@ export type ActionType = {
 };
 
 export type CompanyType = {
-  description?: string,
-  bgImage?: {id: string, path: string},
-  profileImage?: {id: string, path: string},
-  hp?: string,
-  industry?: string,
-  location?: string,
-  name?: string,
-  id?: string
+  description: string,
+  bgImage: {id: string, path: string},
+  profileImage: {id: string, path: string},
+  hp: string,
+  industry: string,
+  location: string,
+  name: string,
+  id: string
 };
