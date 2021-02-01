@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
 import {
-  Home, Companies, SignUp, SignIn,
+  Home, CompanyList, SignUp, SignIn, CompanyDetail,
 } from './pages/index';
 import Auth from './Auth';
 
@@ -11,7 +11,8 @@ const Router: React.FC = () => (
     <Route exact path="/signin" component={SignIn} />
     <Route exact path="/signup" component={SignUp} />
     <Auth>
-      <Route exact path="/companies" component={Companies} />
+      <Route exact path="/companies" component={CompanyList} />
+      <Route exact path="/companies/:id" component={CompanyDetail} />
     </Auth>
   </Switch>
 );

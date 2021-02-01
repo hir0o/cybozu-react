@@ -1,4 +1,5 @@
 export { default as Home } from './Home';
-export { default as Companies } from './Companies';
+export { default as CompanyList } from './CompanyList';
+export { default as CompanyDetail } from './CompanyDetail';
 export { default as SignUp } from './SignUp';
 export { default as SignIn } from './SignIn';
