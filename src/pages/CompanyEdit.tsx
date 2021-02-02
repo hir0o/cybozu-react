@@ -67,8 +67,6 @@ const CompanyEdit: React.FC = () => {
   );
   const inputStartDate = useCallback(
     (event) => {
-      console.log(event.target.value);
-
       setStartDate(event.target.value);
     },
     [setStartDate],
