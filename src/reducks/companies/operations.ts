@@ -42,3 +42,50 @@ export const saveCompany = (company: CompanyType, id: string) => async (dispatch
       throw new Error(error);
     });
 };
+
+export const addComment = (
+  comment: string,
+  id: string,
+  company: CompanyType,
+  username: string,
+) => async (dispatch: any) => {
+  const timestamp = FirebaseTimestamp.now().toDate();
+
+  // TODO: この辺りうまく書きたい。。。
+  let data = {};
+
+  if (company.comments !== undefined) {
+    data = {
+      ...company,
+      comments: [
+        ...company.comments,
+        {
+          username,
+          profileImagePath: '',
+          comment,
+          created_at: timestamp,
+        },
+      ],
+    };
+  } else {
+    data = {
+      ...company,
+      comments: [{
+        username,
+        profileImagePath: '',
+        comment,
+        created_at: timestamp,
+      },
+      ],
+    };
+  }
+
+  console.log('わあああああああああああああ');
+
+  return companiesRef.doc(id).set(data, { merge: true })
+    .then(() => {
+      dispatch(push('/'));
+    }).catch((error) => {
+      throw new Error(error);
+    });
+};

@@ -5,6 +5,13 @@ export type ActionType = {
   payload: any
 };
 
+type CommentType = {
+  username: string,
+  profileImagePath: string,
+  comment: string,
+  created_at: Date,
+};
+
 export type CompanyType = {
   name: string,
   description: string,
@@ -14,6 +21,7 @@ export type CompanyType = {
   location: string,
   startDate: string,
   staffNumber: number,
+  comments?: CommentType[],
   id?: string,
   created_at?: Date,
   updated_at?: Date,
