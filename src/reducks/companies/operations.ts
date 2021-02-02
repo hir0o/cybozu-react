@@ -29,15 +29,13 @@ export const saveCompany = (company: CompanyType, id: string) => async (dispatch
 
   // editじゃなかったら，
   if (id === '' || id === undefined) {
-  // firebaseで自動付与されるidを取得
+    // firebaseで自動付与されるidを取得
     const ref = companiesRef.doc();
     data.id = ref.id;
     data.created_at = timestamp;
   }
 
-  console.log(data);
-
-  return companiesRef.doc(data.id).set(data, { merge: true })
+  return companiesRef.doc(id).set(data, { merge: true })
     .then(() => {
       dispatch(push('/'));
     }).catch((error) => {

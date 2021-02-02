@@ -1,13 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
 import { TextInput } from '../components/UiKid/index';
+import { db } from '../firebase';
 import { saveCompany } from '../reducks/companies/operations';
+import { CompanyType } from '../reducks/companies/types';
 
-type Prop = {} & RouteComponentProps<{id: string}>;
-
-const CompanyEdit: React.FC<Prop> = ({ match }) => {
-  const { id } = match.params;
+const CompanyEdit: React.FC = () => {
+  const id = window.location.pathname.split('/companies/edit/')[1];
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -68,10 +67,27 @@ const CompanyEdit: React.FC<Prop> = ({ match }) => {
   );
   const inputStartDate = useCallback(
     (event) => {
+      console.log(event.target.value);
+
       setStartDate(event.target.value);
     },
     [setStartDate],
   );
+
+  useEffect(() => {
+    if (id !== '' && id !== undefined) {
+      db.collection('companies').doc(id).get().then((snapshot) => {
+        const data = snapshot.data() as CompanyType;
+        setName(data.name);
+        setDescription(data.description);
+        setHp(data.hp);
+        setIndustry(data.industry);
+        setLocation(data.location);
+        setStaffNumber(data.staffNumber);
+        setStartDate(data.startDate);
+      });
+    }
+  }, [id]);
 
   return (
     <div className="max-w-xl mx-auto mt-8 px-4 md:px-0">
