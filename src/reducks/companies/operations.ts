@@ -1,22 +1,44 @@
-import { db } from '../../firebase/index';
+import { push } from 'connected-react-router';
+import { db, FirebaseTimestamp } from '../../firebase/index';
 import { fetchCompaniesAction } from './actions';
+import { CompanyType } from './types';
 
 const companiesRef = db.collection('companies');
 
-const fetchCompanies = () => async (dispatch: any) => {
+export const fetchCompanies = () => async (dispatch: any) => {
   // TODO: 降順で取得する
   companiesRef.get()
     .then((snapshots) => {
-      const companyList = []; // TODO: anyになっちゃってる
+      const companyList: CompanyType[] = [];
       // TODO: mapとかを使った方がいい
       snapshots.forEach((snapshot) => {
-        const product = snapshot.data();
-        companyList.push(product);
+        const company: CompanyType = snapshot.data() as CompanyType; // TODO: 無理やり
+        companyList.push(company);
       });
-      console.log(companyList);
 
       dispatch(fetchCompaniesAction(companyList));
     });
 };
 
-export default fetchCompanies;
+export const saveCompany = (company: CompanyType, id: string) => async (dispatch: any) => {
+  const timestamp = FirebaseTimestamp.now().toDate();
+  const data = {
+    ...company,
+    updated_at: timestamp,
+  };
+
+  // editじゃなかったら，
+  if (id === '' || id === undefined) {
+    // firebaseで自動付与されるidを取得
+    const ref = companiesRef.doc();
+    data.id = ref.id;
+    data.created_at = timestamp;
+  }
+
+  return companiesRef.doc(id).set(data, { merge: true })
+    .then(() => {
+      dispatch(push('/'));
+    }).catch((error) => {
+      throw new Error(error);
+    });
+};
