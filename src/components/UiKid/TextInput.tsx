@@ -3,7 +3,7 @@ import React from 'react';
 type Props = {
   inputType: string,
   placeholder: string,
-  value: string,
+  value: string | number,
   className?: string,
   id: string,
   label?: string,
