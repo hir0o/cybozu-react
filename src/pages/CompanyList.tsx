@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Card from '../components/companies/Card';
 import { getCompanies } from '../reducks/companies/selecors';
-import fetchCompanies from '../reducks/companies/operations';
+import { fetchCompanies } from '../reducks/companies/operations';
 import { CompanyType } from '../reducks/companies/types';
 
 const CompanyList: React.FC = () => {

@@ -1,8 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { TextInput } from '../components/UiKid/index';
+import { saveCompany } from '../reducks/companies/operations';
 
-const CompanyEdit: React.FC = () => {
+type Prop = {} & RouteComponentProps<{id: string}>;
+
+const CompanyEdit: React.FC<Prop> = ({ match }) => {
+  const { id } = match.params;
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -11,6 +16,11 @@ const CompanyEdit: React.FC = () => {
   const [industry, setIndustry] = useState('');
   const [location, setLocation] = useState('');
   // const [profileImage, setProfileImage] = useState({});
+
+  const profileImage = {
+    id: '12345',
+    path: '',
+  };
   const [staffNumber, setStaffNumber] = useState(0);
   const [startDate, setStartDate] = useState('');
 
@@ -125,15 +135,16 @@ const CompanyEdit: React.FC = () => {
         />
         <button
           className="w-full bg-green-500 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-green-400"
-          onClick={() => dispatch(console.log({
+          onClick={() => dispatch(saveCompany({
             name,
             description,
+            profileImage,
             hp,
             industry,
             location,
             staffNumber,
             startDate,
-          }))}
+          }, id))}
           type="button"
         >
           登録
