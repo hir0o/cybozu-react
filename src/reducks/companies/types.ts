@@ -9,7 +9,7 @@ type CommentType = {
   username: string,
   profileImagePath: string,
   comment: string,
-  created_at: Date,
+  created_at?: Date,
 };
 
 export type CompanyType = {

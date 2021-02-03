@@ -49,6 +49,12 @@ export const addComment = (
   company: CompanyType,
   username: string,
 ) => async (dispatch: any) => {
+  // コメントが空だったら何もしない
+  if (comment === '') {
+    alert('コメントを入力してください。');
+    return false;
+  }
+
   const timestamp = FirebaseTimestamp.now().toDate();
 
   // TODO: この辺りうまく書きたい。。。
@@ -61,7 +67,7 @@ export const addComment = (
         ...company.comments,
         {
           username,
-          profileImagePath: '',
+          profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
           comment,
           created_at: timestamp,
         },
@@ -72,7 +78,7 @@ export const addComment = (
       ...company,
       comments: [{
         username,
-        profileImagePath: '',
+        profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
         comment,
         created_at: timestamp,
       },
@@ -80,11 +86,9 @@ export const addComment = (
     };
   }
 
-  console.log('わあああああああああああああ');
-
   return companiesRef.doc(id).set(data, { merge: true })
     .then(() => {
-      dispatch(push('/'));
+      dispatch(push(`/companies/${id}`));
     }).catch((error) => {
       throw new Error(error);
     });

@@ -26,6 +26,40 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
     [setComment],
   );
 
+  const updateComment = useCallback(
+    (_comment: string, _username: string) => {
+      if (_comment === '') {
+        return;
+      }
+      let comments = [];
+      if (company.comments !== undefined) {
+        comments = [
+          ...company.comments,
+          {
+            username: _username,
+            profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+            comment: _comment,
+          },
+        ];
+      } else {
+        comments = [
+          {
+            username: _username,
+            profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+            comment: _comment,
+          },
+        ];
+      }
+      company.comments = comments;
+      setCompany(company);
+    },
+    [addComment],
+  );
+
+  const deleteInput = useCallback(() => {
+    setComment('');
+  }, [setComment]);
+
   useEffect(() => {
     db.collection('companies').doc(id).get()
       .then((doc: any) => {
@@ -89,11 +123,14 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
       </SectionBox>
       <SectionBox title="コメント">
         <div className="grid grid-cols-1 gap-4 mt-4">
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
+          {company.comments && company.comments.map((commentItem, index) => (
+            <CommentItem
+              userName={commentItem.username}
+              profileImgPath={commentItem.profileImagePath}
+              commentText={commentItem.comment}
+              key={index}
+            />
+          ))}
         </div>
       </SectionBox>
       <SectionBox title="コメントを残す">
@@ -109,7 +146,11 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
           <div className="text-center mt-3">
             <button
               className="px-8 bg-blue-400 text-white text-bold raund-md py-2 rounded-md hover:bg-blue-300"
-              onClick={() => dispatch(addComment(comment, id, company, username))}
+              onClick={() => {
+                dispatch(addComment(comment, id, company, username));
+                updateComment(comment, username);
+                deleteInput();
+              }}
               type="button"
             >
               投稿する
