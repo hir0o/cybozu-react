@@ -2,6 +2,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 import { CompanyType } from '../../reducks/companies/types';
+import { ProfileImage } from '../UiKid/index';
+import NoImage from '../../assets/img/noimage.png';
 
 const MAX_LENGTH = 55;
 
@@ -24,9 +26,11 @@ const Card: React.FC<Props> = ({ company }: Props) => {
     <button type="button" onClick={() => dispatch(push(`/companies/${company.id}`))} className="bg-white rounded-md shadow-sm hover:shadow-lg transition-shadow text-left border-t-4 border-blue-400 border-solid">
       <div className="flex p-4 items-center cursor-pointer">
         <div className="w-24 flex-shrink-0">
-          {company.profileImage ? (
-            <img src={company.profileImage.path} alt="" className="w-full" />
-          ) : ''}
+          {company.profileImage && company.profileImage.path ? (
+            <ProfileImage path={company.profileImage.path} size="md" />
+          ) : (
+            <ProfileImage path={NoImage} size="md" />
+          )}
         </div>
         <div className="flex-shrink ml-3">
           <h3>{company.name}</h3>

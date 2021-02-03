@@ -1,10 +1,14 @@
 import { push } from 'connected-react-router';
-import { SignUpType, SignIpType } from './types';
+import {
+  SignUpType, SignIpType, UserType, ImageType,
+} from './types';
 import { auth, db, FirebaseTimestamp } from '../../firebase/index';
 import { signInAction, signUpAction, signOutAction } from './actions';
 
 // * 参考
 // * https://firebase.google.com/docs/auth/web/password-auth?hl=ja
+
+const usersRef = db.collection('users');
 
 // 認証のリッスン
 export const listenAuthState = () => async (dispatch: any) => auth.onAuthStateChanged((user) => {
@@ -122,4 +126,30 @@ export const signOut = () => async (dispatch: any) => {
     dispatch(signOutAction());
     dispatch(push('/'));
   });
+};
+
+// ユーザー情報の編集
+export const saveUser = ({ user, username, profileImage }: {
+  user: UserType,
+  username: string,
+  profileImage: ImageType
+}) => async (dispatch: any) => {
+  const timestamp = FirebaseTimestamp.now().toDate();
+  console.log(user);
+
+  const data = {
+    ...user,
+    username,
+    profileImg: profileImage,
+    updated_at: timestamp,
+  };
+
+  console.log(data);
+
+  return usersRef.doc(user.uid).set(data, { merge: true })
+    .then(() => {
+      dispatch(push('/'));
+    }).catch((error) => {
+      throw new Error(error);
+    });
 };

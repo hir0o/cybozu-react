@@ -1,8 +1,14 @@
+export type ImageType = {
+  id: string,
+  path: string
+};
+
 export type UserType = {
   username: string,
   email: string,
   isSignedIn: boolean,
   uid: string,
+  profileImg?: ImageType,
 };
 
 // 新規登録

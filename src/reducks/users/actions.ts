@@ -4,23 +4,18 @@ import { UserType } from './types';
 export const SIGN_IN = 'SIGN_IN';
 export const signInAction = (userState: UserType) => ({
   type: 'SIGN_IN',
-  payload: {
-    isSignedIn: true,
-    uid: userState.uid,
-    username: userState.username,
-  },
+  payload: userState,
 });
 
 // ログイン
 export const SIGN_UP = 'SIGN_UP';
-export const signUpAction = (userState: UserType) => ({
-  type: 'SIGN_UP',
-  payload: {
-    isSignedIn: true,
-    uid: userState.uid,
-    username: userState.username,
-  },
-});
+export const signUpAction = (userState: UserType) => {
+  console.log(userState);
+  return ({
+    type: 'SIGN_UP',
+    payload: userState,
+  });
+};
 
 // ログアウト
 export const SIGN_OUT = 'SIGN_OUT';
