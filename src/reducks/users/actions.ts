@@ -9,13 +9,10 @@ export const signInAction = (userState: UserType) => ({
 
 // ログイン
 export const SIGN_UP = 'SIGN_UP';
-export const signUpAction = (userState: UserType) => {
-  console.log(userState);
-  return ({
-    type: 'SIGN_UP',
-    payload: userState,
-  });
-};
+export const signUpAction = (userState: UserType) => ({
+  type: 'SIGN_UP',
+  payload: userState,
+});
 
 // ログアウト
 export const SIGN_OUT = 'SIGN_OUT';

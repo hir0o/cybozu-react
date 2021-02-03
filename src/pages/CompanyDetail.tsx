@@ -7,7 +7,7 @@ import { db } from '../firebase/index';
 import { TextInput, ProfileImage } from '../components/UiKid/index';
 import { SectionBox, CommentItem } from '../components/companies/index';
 import { addComment } from '../reducks/companies/operations';
-import { getUserName } from '../reducks/users/selecors';
+import { getUser } from '../reducks/users/selecors';
 import NoImage from '../assets/img/noimage.png';
 
 type Prop = {} & RouteComponentProps<{id: string}>;
@@ -18,7 +18,9 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
   const [comment, setComment] = useState<string>('');
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
-  const username = getUserName(selector);
+  const user = getUser(selector);
+
+  const { username, profileImg } = user;
 
   const inputComment = useCallback(
     (event) => {
@@ -28,7 +30,7 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
   );
 
   const updateComment = useCallback(
-    (_comment: string, _username: string) => {
+    (_comment: string, _username: string, _profileImagePath: string) => {
       if (_comment === '') {
         return;
       }
@@ -38,7 +40,7 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
           ...company.comments,
           {
             username: _username,
-            profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+            profileImagePath: _profileImagePath || NoImage,
             comment: _comment,
           },
         ];
@@ -46,7 +48,7 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
         comments = [
           {
             username: _username,
-            profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+            profileImagePath: _profileImagePath || NoImage,
             comment: _comment,
           },
         ];
@@ -150,8 +152,8 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
             <button
               className="px-8 bg-blue-400 text-white text-bold raund-md py-2 rounded-md hover:bg-blue-300"
               onClick={() => {
-                dispatch(addComment(comment, id, company, username));
-                updateComment(comment, username);
+                dispatch(addComment(comment, id, company, username, profileImg.path));
+                updateComment(comment, username, profileImg.path);
                 deleteInput();
               }}
               type="button"
