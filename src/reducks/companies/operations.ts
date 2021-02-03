@@ -42,3 +42,54 @@ export const saveCompany = (company: CompanyType, id: string) => async (dispatch
       throw new Error(error);
     });
 };
+
+export const addComment = (
+  comment: string,
+  id: string,
+  company: CompanyType,
+  username: string,
+) => async (dispatch: any) => {
+  // コメントが空だったら何もしない
+  if (comment === '') {
+    alert('コメントを入力してください。');
+    return false;
+  }
+
+  const timestamp = FirebaseTimestamp.now().toDate();
+
+  // TODO: この辺りうまく書きたい。。。
+  let data = {};
+
+  if (company.comments !== undefined) {
+    data = {
+      ...company,
+      comments: [
+        ...company.comments,
+        {
+          username,
+          profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+          comment,
+          created_at: timestamp,
+        },
+      ],
+    };
+  } else {
+    data = {
+      ...company,
+      comments: [{
+        username,
+        profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+        comment,
+        created_at: timestamp,
+      },
+      ],
+    };
+  }
+
+  return companiesRef.doc(id).set(data, { merge: true })
+    .then(() => {
+      dispatch(push(`/companies/${id}`));
+    }).catch((error) => {
+      throw new Error(error);
+    });
+};

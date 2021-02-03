@@ -1,16 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import HTMLReactParser from 'html-react-parser';
 import { RouteComponentProps } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { CompanyType } from '../reducks/companies/types';
 import { db } from '../firebase/index';
 import { TextInput } from '../components/UiKid/index';
 import { SectionBox, CommentItem } from '../components/companies/index';
+import { addComment } from '../reducks/companies/operations';
+import { getUserName } from '../reducks/users/selecors';
 
 type Prop = {} & RouteComponentProps<{id: string}>;
 
 const CompanyDetail: React.FC<Prop> = ({ match }) => {
   const { id } = match.params;
   const [company, setCompany] = useState<CompanyType>({} as CompanyType);
+  const [comment, setComment] = useState<string>('');
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state);
+  const username = getUserName(selector);
+
+  const inputComment = useCallback(
+    (event) => {
+      setComment(event.target.value);
+    },
+    [setComment],
+  );
+
+  const updateComment = useCallback(
+    (_comment: string, _username: string) => {
+      if (_comment === '') {
+        return;
+      }
+      let comments = [];
+      if (company.comments !== undefined) {
+        comments = [
+          ...company.comments,
+          {
+            username: _username,
+            profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+            comment: _comment,
+          },
+        ];
+      } else {
+        comments = [
+          {
+            username: _username,
+            profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+            comment: _comment,
+          },
+        ];
+      }
+      company.comments = comments;
+      setCompany(company);
+    },
+    [addComment],
+  );
+
+  const deleteInput = useCallback(() => {
+    setComment('');
+  }, [setComment]);
 
   useEffect(() => {
     db.collection('companies').doc(id).get()
@@ -75,11 +123,14 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
       </SectionBox>
       <SectionBox title="コメント">
         <div className="grid grid-cols-1 gap-4 mt-4">
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
-          <CommentItem userName="hiroyuki" profileImgPath="https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png" commentText="コメントです." />
+          {company.comments && company.comments.map((commentItem, index) => (
+            <CommentItem
+              userName={commentItem.username}
+              profileImgPath={commentItem.profileImagePath}
+              commentText={commentItem.comment}
+              key={index}
+            />
+          ))}
         </div>
       </SectionBox>
       <SectionBox title="コメントを残す">
@@ -88,14 +139,18 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
             inputType="textarea"
             placeholder="コメントを入力してください"
             className="text-sm"
-            value="dummy"
-            id="dummy"
-            onChange={() => console.log('aa')}
+            value={comment}
+            id="comment"
+            onChange={inputComment}
           />
           <div className="text-center mt-3">
             <button
-              className="px-8 bg-blue-400 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-blue-300"
-              onClick={() => console.log('ダミー')}
+              className="px-8 bg-blue-400 text-white text-bold raund-md py-2 rounded-md hover:bg-blue-300"
+              onClick={() => {
+                dispatch(addComment(comment, id, company, username));
+                updateComment(comment, username);
+                deleteInput();
+              }}
               type="button"
             >
               投稿する

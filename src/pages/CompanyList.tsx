@@ -17,8 +17,8 @@ const CompanyList: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto mt-8 px-4 md:px-0">
       <div className="grid md:grid-cols-2 grid-cols-1 gap-8">
-        {companies.list && companies.list.map((item: CompanyType) => (
-          <Card company={item} key={item.name} />
+        {companies.list && companies.list.map((item: CompanyType, index: number) => (
+          <Card company={item} key={index} />
         ))}
       </div>
     </div>
