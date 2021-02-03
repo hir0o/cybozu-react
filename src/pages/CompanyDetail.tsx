@@ -29,39 +29,33 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
     [setComment],
   );
 
-  const updateComment = useCallback(
-    (_comment: string, _username: string, _profileImagePath: string) => {
-      if (_comment === '') {
-        return;
-      }
-      let comments = [];
-      if (company.comments !== undefined) {
-        comments = [
-          ...company.comments,
-          {
-            username: _username,
-            profileImagePath: _profileImagePath || NoImage,
-            comment: _comment,
-          },
-        ];
-      } else {
-        comments = [
-          {
-            username: _username,
-            profileImagePath: _profileImagePath || NoImage,
-            comment: _comment,
-          },
-        ];
-      }
-      company.comments = comments;
-      setCompany(company);
-    },
-    [addComment],
-  );
+  const updateComment = (_comment: string, _username: string, _profileImagePath: string) => {
+    if (_comment === '') {
+      return;
+    }
+    let comments = [];
+    if (company.comments !== undefined) {
+      comments = [
+        ...company.comments,
+        {
+          username: _username,
+          profileImagePath: _profileImagePath || NoImage,
+          comment: _comment,
+        },
+      ];
+    } else {
+      comments = [
+        {
+          username: _username,
+          profileImagePath: _profileImagePath || NoImage,
+          comment: _comment,
+        },
+      ];
+    }
 
-  const deleteInput = useCallback(() => {
-    setComment('');
-  }, [setComment]);
+    company.comments = comments;
+    setCompany(company);
+  };
 
   useEffect(() => {
     db.collection('companies').doc(id).get()
@@ -70,6 +64,10 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
         setCompany(data);
       });
   }, []);
+
+  const deleteInput = useCallback(() => {
+    setComment('');
+  }, [setComment]);
 
   const returnCodeToBr = (text: string | undefined) => {
     if (text === '' || text === undefined) {
