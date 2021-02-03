@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import NoImage from '../../assets/img/noimage.png';
 import { ImageType } from '../../reducks/companies/types';
 import { storage } from '../../firebase/index';
-import { ProfileImage } from '.';
+import ProfileImage from './ProfileImage';
 
 type Prop = {
   image: ImageType
