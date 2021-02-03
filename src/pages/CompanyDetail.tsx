@@ -4,10 +4,11 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CompanyType } from '../reducks/companies/types';
 import { db } from '../firebase/index';
-import { TextInput } from '../components/UiKid/index';
+import { TextInput, ProfileImage } from '../components/UiKid/index';
 import { SectionBox, CommentItem } from '../components/companies/index';
 import { addComment } from '../reducks/companies/operations';
 import { getUserName } from '../reducks/users/selecors';
+import NoImage from '../assets/img/noimage.png';
 
 type Prop = {} & RouteComponentProps<{id: string}>;
 
@@ -79,10 +80,12 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
     <div className="mx-4 mb-8">
       <SectionBox>
         <div className="flex items-center">
-          <div className="w-24">
-            {company.profileImage ? (
-              <img src={company.profileImage.path} alt="" className="w-full" />
-            ) : ''}
+          <div className="w-24 h-24">
+            {company.profileImage && company.profileImage.path ? (
+              <ProfileImage path={company.profileImage.path} size="md" />
+            ) : (
+              <ProfileImage path={NoImage} size="md" />
+            )}
           </div>
           <div className="ml-4">
             <h1 className="text-2xl">{company.name}</h1>

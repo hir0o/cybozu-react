@@ -14,7 +14,7 @@ const CompanyEdit: React.FC = () => {
   const [hp, setHp] = useState('');
   const [industry, setIndustry] = useState('');
   const [location, setLocation] = useState('');
-  const [profileImage, setProfileImage] = useState<ImageType>({});
+  const [profileImage, setProfileImage] = useState<ImageType>({ path: '', id: '' });
   const [staffNumber, setStaffNumber] = useState(0);
   const [startDate, setStartDate] = useState('');
 
@@ -70,6 +70,9 @@ const CompanyEdit: React.FC = () => {
         setHp(data.hp);
         setIndustry(data.industry);
         setLocation(data.location);
+        if (data.profileImage !== undefined) {
+          setProfileImage(data.profileImage);
+        }
         setStaffNumber(data.staffNumber);
         setStartDate(data.startDate);
       });

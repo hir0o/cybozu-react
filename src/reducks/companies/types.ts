@@ -13,8 +13,8 @@ type CommentType = {
 };
 
 export type ImageType = {
-  id?: string,
-  path?: string
+  id: string,
+  path: string
 };
 
 export type CompanyType = {
