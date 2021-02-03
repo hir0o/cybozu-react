@@ -2,6 +2,7 @@ import { push } from 'connected-react-router';
 import { db, FirebaseTimestamp } from '../../firebase/index';
 import { fetchCompaniesAction } from './actions';
 import { CompanyType } from './types';
+import NoImage from '../../assets/img/noimage.png';
 
 const companiesRef = db.collection('companies');
 
@@ -48,6 +49,7 @@ export const addComment = (
   id: string,
   company: CompanyType,
   username: string,
+  profileImagePath: string,
 ) => async (dispatch: any) => {
   // コメントが空だったら何もしない
   if (comment === '') {
@@ -67,7 +69,7 @@ export const addComment = (
         ...company.comments,
         {
           username,
-          profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+          profileImagePath: profileImagePath || NoImage,
           comment,
           created_at: timestamp,
         },
@@ -78,7 +80,7 @@ export const addComment = (
       ...company,
       comments: [{
         username,
-        profileImagePath: 'https://s.yimg.jp/images/jpnews/cre/comment/all/images/user_icon_color_green.png',
+        profileImagePath: profileImagePath || NoImage,
         comment,
         created_at: timestamp,
       },

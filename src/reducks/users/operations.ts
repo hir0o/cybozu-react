@@ -28,6 +28,7 @@ export const listenAuthState = () => async (dispatch: any) => auth.onAuthStateCh
               uid: data.uid,
               email: data.email,
               username: data.username,
+              profileImg: data.profileImg,
             }),
           );
         }
@@ -111,6 +112,7 @@ export const signIn = ({
                 uid: data.uid,
                 email: data.email,
                 username: data.username,
+                profileImg: data.profileImg,
               }),
             );
             dispatch(push('/'));
@@ -135,7 +137,6 @@ export const saveUser = ({ user, username, profileImage }: {
   profileImage: ImageType
 }) => async (dispatch: any) => {
   const timestamp = FirebaseTimestamp.now().toDate();
-  console.log(user);
 
   const data = {
     ...user,
@@ -143,8 +144,6 @@ export const saveUser = ({ user, username, profileImage }: {
     profileImg: profileImage,
     updated_at: timestamp,
   };
-
-  console.log(data);
 
   return usersRef.doc(user.uid).set(data, { merge: true })
     .then(() => {

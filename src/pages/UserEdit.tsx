@@ -10,7 +10,6 @@ const UserEdit: React.FC = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
   const user = getUser(selector);
-  console.log(user);
 
   const [username, setUserName] = useState('');
   const [profileImage, setProfileImage] = useState<ImageType>({ path: '', id: '' });
