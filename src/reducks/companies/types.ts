@@ -12,15 +12,20 @@ type CommentType = {
   created_at?: Date,
 };
 
+export type ImageType = {
+  id?: string,
+  path?: string
+};
+
 export type CompanyType = {
   name: string,
   description: string,
-  profileImage: {id: string, path: string},
   hp: string,
   industry: string,
   location: string,
   startDate: string,
   staffNumber: number,
+  profileImage?: ImageType,
   comments?: CommentType[],
   id?: string,
   created_at?: Date,

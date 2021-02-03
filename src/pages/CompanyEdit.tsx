@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { TextInput } from '../components/UiKid/index';
+import { TextInput, ImgInput } from '../components/UiKid/index';
 import { db } from '../firebase';
 import { saveCompany } from '../reducks/companies/operations';
-import { CompanyType } from '../reducks/companies/types';
+import { CompanyType, ImageType } from '../reducks/companies/types';
 
 const CompanyEdit: React.FC = () => {
-  const id = window.location.pathname.split('/companies/edit/')[1];
+  const id: string | undefined = window.location.pathname.split('/companies/edit/')[1];
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -14,12 +14,7 @@ const CompanyEdit: React.FC = () => {
   const [hp, setHp] = useState('');
   const [industry, setIndustry] = useState('');
   const [location, setLocation] = useState('');
-  // const [profileImage, setProfileImage] = useState({});
-
-  const profileImage = {
-    id: '12345',
-    path: '',
-  };
+  const [profileImage, setProfileImage] = useState<ImageType>({});
   const [staffNumber, setStaffNumber] = useState(0);
   const [startDate, setStartDate] = useState('');
 
@@ -53,12 +48,6 @@ const CompanyEdit: React.FC = () => {
     },
     [setLocation],
   );
-  // const inputProfileImage = useCallback(
-  //   (event) => {
-  //     setProfileImage(event.target.value);
-  //   },
-  //   [setProfileImage],
-  // );
   const inputStaffNumber = useCallback(
     (event) => {
       setStaffNumber(event.target.value);
@@ -91,6 +80,7 @@ const CompanyEdit: React.FC = () => {
     <div className="max-w-xl mx-auto mt-8 px-4 md:px-0">
       <h2 className="text-2xl">企業情報登録</h2>
       <form className="grid grid-cols-1 gap-6 mt-8">
+        <ImgInput image={profileImage} setImage={setProfileImage} />
         <TextInput
           placeholder=""
           label="会社名"
