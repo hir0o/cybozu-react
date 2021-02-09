@@ -115,6 +115,7 @@ export const signIn = ({
   if (email === '' || password === '') {
     return false;
   }
+  // TODO: アカウントがなかった場合の処理
   return auth.signInWithEmailAndPassword(email, password).then((result) => {
     const { user } = result;
 
@@ -143,6 +144,24 @@ export const signIn = ({
     }
   });
 };
+
+export const signInWithGoogle = () => async (dispatch: any) => auth.signInWithPopup(provider)
+  .then((result) => {
+    const { user } = result;
+    const { uid } = user as any;
+    db.collection('users')
+      .doc(uid)
+      .get()
+      .then((snapshot) => {
+        const data = snapshot.data();
+
+        if (data) {
+          dispatch(push('/companies'));
+        } else {
+          alert('アカウントが存在しません。');
+        }
+      });
+  });
 
 // ログアウト
 export const signOut = () => async (dispatch: any) => {
