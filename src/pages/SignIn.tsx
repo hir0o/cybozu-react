@@ -52,6 +52,8 @@ const SignIn = () => {
         >
           ログイン
         </button>
+        <p className="mt-6 text-center">もしくは</p>
+        <button type="button" className="w-full bg-white border border-gray-300 text-bold raund-md py-2 px-3 rounded-md text-gray-700">Googleでログイン</button>
       </div>
     </div>
   );

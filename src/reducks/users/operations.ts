@@ -2,7 +2,9 @@ import { push } from 'connected-react-router';
 import {
   SignUpType, SignIpType, UserType, ImageType,
 } from './types';
-import { auth, db, FirebaseTimestamp } from '../../firebase/index';
+import {
+  auth, db, FirebaseTimestamp, provider,
+} from '../../firebase/index';
 import { signInAction, signUpAction, signOutAction } from './actions';
 
 // * 参考
@@ -37,6 +39,26 @@ export const listenAuthState = () => async (dispatch: any) => auth.onAuthStateCh
     dispatch(push('/signin'));
   }
 });
+
+// googleログイン
+export const googleLogin = () => async (dispatch: any) => auth.signInWithPopup(provider)
+  .then((result) => {
+    const { user } = result;
+    const { email, displayName, uid } = user as any;
+
+    return db.collection('users')
+      .doc(uid)
+      .set({
+        isSignedIn: true,
+        uid,
+        email,
+        username: displayName,
+      })
+      .then(() => {
+        dispatch(listenAuthState());
+        dispatch(push('/'));
+      });
+  });
 
 // 会員登録
 export const signUp = ({

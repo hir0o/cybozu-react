@@ -7,7 +7,7 @@ import Auth from './Auth';
 
 const Router: React.FC = () => (
   <Switch>
-    <Route exact path="/" component={SignIn} />
+    <Route exact path="/signin" component={SignIn} />
     <Route exact path="/signup" component={SignUp} />
     <Auth>
       <Switch>

@@ -10,3 +10,4 @@ export const auth = firebase.auth();
 export const db = firebase.firestore();
 export const storage = firebase.storage();
 export const FirebaseTimestamp = firebase.firestore.Timestamp; // タイムスタンプを取得できる．
+export const provider = new firebase.auth.GoogleAuthProvider(); // プロバイダ オブジェクト
