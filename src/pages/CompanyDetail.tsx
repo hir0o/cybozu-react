@@ -150,8 +150,8 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
             <button
               className="px-8 bg-blue-400 text-white text-bold raund-md py-2 rounded-md hover:bg-blue-300"
               onClick={() => {
-                dispatch(addComment(comment, id, company, username, profileImg.path));
-                updateComment(comment, username, profileImg.path);
+                dispatch(addComment(comment, id, company, username, profileImg?.path));
+                updateComment(comment, username, profileImg?.path);
                 deleteInput();
               }}
               type="button"

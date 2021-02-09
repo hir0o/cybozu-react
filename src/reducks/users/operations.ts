@@ -44,7 +44,11 @@ export const listenAuthState = () => async (dispatch: any) => auth.onAuthStateCh
 export const googleLogin = () => async (dispatch: any) => auth.signInWithPopup(provider)
   .then((result) => {
     const { user } = result;
-    const { email, displayName, uid } = user as any;
+    console.log(user);
+
+    const {
+      email, displayName, uid, photoURL,
+    } = user as any;
 
     return db.collection('users')
       .doc(uid)
@@ -53,10 +57,13 @@ export const googleLogin = () => async (dispatch: any) => auth.signInWithPopup(p
         uid,
         email,
         username: displayName,
+        profileImg: {
+          path: photoURL,
+        },
       })
       .then(() => {
         dispatch(listenAuthState());
-        dispatch(push('/'));
+        dispatch(push('/companies'));
       });
   });
 
@@ -101,7 +108,7 @@ export const signUp = ({
           .set(userInitialData)
           .then(() => {
             dispatch(listenAuthState());
-            dispatch(push('/'));
+            dispatch(push('/companies'));
           });
       }
     });
@@ -138,7 +145,7 @@ export const signIn = ({
                 profileImg: data.profileImg,
               }),
             );
-            dispatch(push('/'));
+            dispatch(push('/companies'));
           }
         });
     }
@@ -167,7 +174,7 @@ export const signInWithGoogle = () => async (dispatch: any) => auth.signInWithPo
 export const signOut = () => async (dispatch: any) => {
   auth.signOut().then(() => {
     dispatch(signOutAction());
-    dispatch(push('/'));
+    dispatch(push('/companies'));
   });
 };
 
@@ -188,7 +195,7 @@ export const saveUser = ({ user, username, profileImage }: {
 
   return usersRef.doc(user.uid).set(data, { merge: true })
     .then(() => {
-      dispatch(push('/'));
+      dispatch(push('/companies'));
     }).catch((error) => {
       throw new Error(error);
     });
