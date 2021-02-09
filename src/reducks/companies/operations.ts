@@ -38,7 +38,7 @@ export const saveCompany = (company: CompanyType, id: string) => async (dispatch
 
   return companiesRef.doc(id).set(data, { merge: true })
     .then(() => {
-      dispatch(push('/'));
+      dispatch(push('/companies'));
     }).catch((error) => {
       throw new Error(error);
     });

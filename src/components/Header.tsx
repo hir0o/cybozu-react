@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   return (
     <header className="shadow-md py-5 bg-white">
       <div className="max-w-6xl mx-auto px-4 md:px-0 flex justify-around">
-        <button type="button" className="text-xl font-bold" onClick={() => dispatch(push('/'))}>
+        <button type="button" className="text-xl font-bold" onClick={() => dispatch(push('/companies'))}>
           超就活用会社情報プラットフォーム(仮)
         </button>
         <ul className="flex justify-around">

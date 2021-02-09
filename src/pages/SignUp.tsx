@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { signUp } from '../reducks/users/operations';
+import { googleLogin, signUp } from '../reducks/users/operations';
 import { TextInput } from '../components/UiKid/index';
 
 const SignUp = () => {
@@ -82,6 +82,15 @@ const SignUp = () => {
           type="button"
         >
           登録する
+        </button>
+        <p className="mt-6 text-center">もしくは</p>
+        <button
+          type="button"
+          className="w-full bg-white border border-gray-300 text-bold raund-md py-2 px-3 rounded-md text-gray-700"
+          onClick={() => dispatch(googleLogin())}
+        >
+          Googleアカウントで登録
+
         </button>
       </div>
     </div>
