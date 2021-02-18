@@ -1,5 +1,6 @@
 import { push } from 'connected-react-router';
-import { SignUpType, SignIpType, UserType, ImageType } from './types';
+import { Dispatch } from 'react';
+import { SignUpType, SignIpType, UserType, GoogleAuthUserType } from './types';
 import { auth, db, FirebaseTimestamp, provider } from '../../firebase/index';
 import { signInAction, signUpAction, signOutAction } from './actions';
 
@@ -9,20 +10,20 @@ import { signInAction, signUpAction, signOutAction } from './actions';
 const usersRef = db.collection('users');
 
 // 認証のリッスン
-export const listenAuthState = () => async (dispatch: any) =>
+export const listenAuthState = () => (dispatch: Dispatch<any>) =>
   auth.onAuthStateChanged((user) => {
     if (user) {
       // ユーザーが認証されている場合
       const { uid } = user;
 
-      db.collection('users')
+      void db
+        .collection('users')
         .doc(uid)
         .get()
         .then((snapshot) => {
-          const data = snapshot.data();
+          const data = snapshot.data() as UserType;
 
           if (data) {
-            // not undefind
             dispatch(
               signInAction({
                 isSignedIn: true,
@@ -41,12 +42,11 @@ export const listenAuthState = () => async (dispatch: any) =>
   });
 
 // googleログイン
-export const googleLogin = () => async (dispatch: any) =>
+export const googleLogin = () => (dispatch: Dispatch<any>) =>
   auth.signInWithPopup(provider).then((result) => {
     const { user } = result;
-    console.log(user);
 
-    const { email, displayName, uid, photoURL } = user as any;
+    const { email, displayName, uid, photoURL } = user as GoogleAuthUserType;
 
     return db
       .collection('users')
@@ -56,9 +56,7 @@ export const googleLogin = () => async (dispatch: any) =>
         uid,
         email,
         username: displayName,
-        profileImg: {
-          path: photoURL,
-        },
+        profileImg: photoURL,
       })
       .then(() => {
         dispatch(listenAuthState());
@@ -72,7 +70,7 @@ export const signUp = ({
   email,
   password,
   confirmPassword,
-}: SignUpType) => async (dispatch: any) => {
+}: SignUpType) => (dispatch: Dispatch<any>) => {
   // バリデーション
   if (
     username === '' ||
@@ -81,11 +79,13 @@ export const signUp = ({
     confirmPassword === ''
   ) {
     alert('必須項目が未入力です。');
+
     return false;
   }
 
   if (password !== confirmPassword) {
     alert('パスワードが一致しません。');
+
     return false;
   }
 
@@ -103,7 +103,8 @@ export const signUp = ({
         uid,
         username,
       };
-      db.collection('users')
+      void db
+        .collection('users')
         .doc(uid)
         .set(userInitialData)
         .then(() => {
@@ -115,13 +116,14 @@ export const signUp = ({
 };
 
 // ログイン
-export const signIn = ({ email, password }: SignIpType) => async (
-  dispatch: any,
+export const signIn = ({ email, password }: SignIpType) => (
+  dispatch: Dispatch<any>,
 ) => {
   // バリデーション
   if (email === '' || password === '') {
     return false;
   }
+
   // TODO: アカウントがなかった場合の処理
   return auth.signInWithEmailAndPassword(email, password).then((result) => {
     const { user } = result;
@@ -129,11 +131,12 @@ export const signIn = ({ email, password }: SignIpType) => async (
     if (user) {
       const { uid } = user;
 
-      db.collection('users')
+      void db
+        .collection('users')
         .doc(uid)
         .get()
         .then((snapshot) => {
-          const data = snapshot.data();
+          const data = snapshot.data() as UserType;
           // ? この辺で型チェック？
           if (data) {
             dispatch(
@@ -152,11 +155,12 @@ export const signIn = ({ email, password }: SignIpType) => async (
   });
 };
 
-export const signInWithGoogle = () => async (dispatch: any) =>
+export const signInWithGoogle = () => (dispatch: Dispatch<any>) =>
   auth.signInWithPopup(provider).then((result) => {
     const { user } = result;
-    const { uid } = user as any;
-    db.collection('users')
+    const { uid } = user as GoogleAuthUserType;
+    void db
+      .collection('users')
       .doc(uid)
       .get()
       .then((snapshot) => {
@@ -171,8 +175,8 @@ export const signInWithGoogle = () => async (dispatch: any) =>
   });
 
 // ログアウト
-export const signOut = () => async (dispatch: any) => {
-  auth.signOut().then(() => {
+export const signOut = () => (dispatch: Dispatch<any>) => {
+  void auth.signOut().then(() => {
     dispatch(signOutAction());
     dispatch(push('/companies'));
   });
@@ -186,8 +190,8 @@ export const saveUser = ({
 }: {
   user: UserType;
   username: string;
-  profileImage: ImageType;
-}) => async (dispatch: any) => {
+  profileImage: string;
+}) => (dispatch: Dispatch<any>) => {
   const timestamp = FirebaseTimestamp.now().toDate();
 
   const data = {

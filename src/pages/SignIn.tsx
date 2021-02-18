@@ -11,13 +11,13 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
 
   const inputEmail = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setEmail(event.target.value);
     },
     [setEmail],
   );
   const inputPassword = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setPassword(event.target.value);
     },
     [setPassword],

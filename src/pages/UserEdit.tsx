@@ -3,22 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ImgInput, TextInput } from '../components/UiKid';
 import { db } from '../firebase';
 import { getUser } from '../reducks/users/selecors';
-import { ImageType, UserType } from '../reducks/users/types';
+import { UserType } from '../reducks/users/types';
 import { saveUser } from '../reducks/users/operations';
+import { initialStateType } from '../reducks/store/initialState';
 
 const UserEdit: React.FC = () => {
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
+  const selector = useSelector((state: initialStateType) => state);
   const user = getUser(selector);
 
   const [username, setUserName] = useState('');
-  const [profileImage, setProfileImage] = useState<ImageType>({
-    path: '',
-    id: '',
-  });
+  const [profileImage, setProfileImage] = useState('');
 
   const inputUserName = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setUserName(event.target.value);
     },
     [setUserName],
@@ -28,10 +26,11 @@ const UserEdit: React.FC = () => {
 
   useEffect(() => {
     if (id !== '' && id !== undefined) {
-      db.collection('users')
+      void db
+        .collection('users')
         .doc(id)
         .get()
-        .then((snapshot: any) => {
+        .then((snapshot) => {
           const data = snapshot.data() as UserType;
           setUserName(data.username);
           if (data.profileImg !== undefined) {

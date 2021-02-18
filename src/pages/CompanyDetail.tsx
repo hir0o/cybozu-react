@@ -9,21 +9,22 @@ import { SectionBox, CommentItem } from '../components/companies/index';
 import { addComment } from '../reducks/companies/operations';
 import { getUser } from '../reducks/users/selecors';
 import NoImage from '../assets/img/noimage.png';
+import { initialStateType } from '../reducks/store/initialState';
 
-type Prop = {} & RouteComponentProps<{ id: string }>;
+type Prop = RouteComponentProps<{ id: string }>;
 
 const CompanyDetail: React.FC<Prop> = ({ match }) => {
   const { id } = match.params;
   const [company, setCompany] = useState<CompanyType>({} as CompanyType);
   const [comment, setComment] = useState<string>('');
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
+  const selector = useSelector((state: initialStateType) => state);
   const user = getUser(selector);
 
   const { username, profileImg } = user;
 
   const inputComment = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setComment(event.target.value);
     },
     [setComment],
@@ -32,7 +33,7 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
   const updateComment = (
     _comment: string,
     _username: string,
-    _profileImagePath: string,
+    _profileImagePath?: string,
   ) => {
     if (_comment === '') {
       return;
@@ -62,14 +63,15 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
   };
 
   useEffect(() => {
-    db.collection('companies')
+    void db
+      .collection('companies')
       .doc(id)
       .get()
-      .then((doc: any) => {
-        const data: CompanyType = doc.data();
+      .then((doc) => {
+        const data = doc.data() as CompanyType;
         setCompany(data);
       });
-  }, []);
+  }, [id]);
 
   const deleteInput = useCallback(() => {
     setComment('');
@@ -79,6 +81,7 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
     if (text === '' || text === undefined) {
       return text;
     }
+
     return HTMLReactParser(text.replace(/\r?\n/g, '<br/>'));
   };
 
@@ -87,8 +90,8 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
       <SectionBox>
         <div className="flex items-center">
           <div className="w-24 h-24">
-            {company.profileImage && company.profileImage.path ? (
-              <ProfileImage path={company.profileImage.path} size="md" />
+            {company.profileImage ? (
+              <ProfileImage path={company.profileImage} size="md" />
             ) : (
               <ProfileImage path={NoImage} size="md" />
             )}
@@ -156,9 +159,9 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
               className="px-8 bg-blue-400 text-white text-bold raund-md py-2 rounded-md hover:bg-blue-300"
               onClick={() => {
                 dispatch(
-                  addComment(comment, id, company, username, profileImg?.path),
+                  addComment(comment, id, company, username, profileImg),
                 );
-                updateComment(comment, username, profileImg?.path);
+                updateComment(comment, username, profileImg);
                 deleteInput();
               }}
               type="button"

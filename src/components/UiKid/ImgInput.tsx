@@ -1,20 +1,19 @@
 import React, { useCallback } from 'react';
 import NoImage from '../../assets/img/noimage.png';
-import { ImageType } from '../../reducks/companies/types';
 import { storage } from '../../firebase/index';
 import ProfileImage from './ProfileImage';
 
 type Prop = {
-  image: ImageType;
-  setImage: React.Dispatch<React.SetStateAction<ImageType>>;
+  image: string;
+  setImage: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const ImgInput: React.FC<Prop> = ({ image, setImage }) => {
   // 画像のアップロード
   const uploadImage = useCallback(
-    (event) => {
-      const file = event.target.files;
-      const blob = new Blob(file, { type: 'image/jpeg' });
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { files } = event.target;
+      if (!files) return;
 
       // Generate random 16 digits strings
       const S =
@@ -25,19 +24,19 @@ const ImgInput: React.FC<Prop> = ({ image, setImage }) => {
         .join('');
 
       const uploadRef = storage.ref('images').child(fileName);
-      const uploadTask = uploadRef.put(blob);
+      const uploadTask = uploadRef.put(files[0]);
 
       uploadTask
         .then(() => {
           // Handle successful uploads on complete
-          uploadTask.snapshot.ref
+          void uploadTask.snapshot.ref
             .getDownloadURL()
             .then((downloadURL: string) => {
-              const newImage: ImageType = { id: fileName, path: downloadURL };
+              const newImage = downloadURL;
               setImage(newImage);
             });
         })
-        .catch(() => {});
+        .catch(() => console.log('err')); // eslint-disable-line no-console
     },
     [setImage],
   );
@@ -48,8 +47,8 @@ const ImgInput: React.FC<Prop> = ({ image, setImage }) => {
         画像を選択
       </label>
       <div className="w-36 mt-3">
-        {image.path ? (
-          <ProfileImage path={image.path} size="md" />
+        {image ? (
+          <ProfileImage path={image} size="md" />
         ) : (
           <ProfileImage path={NoImage} size="md" />
         )}

@@ -3,10 +3,11 @@ import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../reducks/users/operations';
 import { getIsSignedIn } from '../reducks/users/selecors';
+import { initialStateType } from '../reducks/store/initialState';
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
+  const selector = useSelector((state: initialStateType) => state);
   const isSignedIn = getIsSignedIn(selector);
 
   return (

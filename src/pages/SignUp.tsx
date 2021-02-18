@@ -14,25 +14,25 @@ const SignUp = () => {
 
   // 関数のメモ化
   const inputUsername = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setUsername(event.target.value);
     },
     [setUsername],
   );
   const inputEmail = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setEmail(event.target.value);
     },
     [setEmail],
   );
   const inputPassword = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setPassword(event.target.value);
     },
     [setPassword],
   );
   const inputConfirmPassword = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setConfirmPassword(event.target.value);
     },
     [setConfirmPassword],

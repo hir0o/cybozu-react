@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Card from '../components/companies/Card';
-import { getCompanies } from '../reducks/companies/selecors';
+import getCompanies from '../reducks/companies/selecors';
 import { fetchCompanies } from '../reducks/companies/operations';
 import { CompanyType } from '../reducks/companies/types';
+import { initialStateType } from '../reducks/store/initialState';
 
 const CompanyList: React.FC = () => {
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
+  const selector = useSelector((state: initialStateType) => state);
   const companies = getCompanies(selector);
 
   useEffect(() => {

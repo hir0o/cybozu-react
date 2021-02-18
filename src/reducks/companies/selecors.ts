@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
+import { initialStateType } from '../store/initialState';
 
-const companySelector = (state: any) => state.companies;
+const companySelector = (state: initialStateType) => state.companies;
 
-export const getCompanies = createSelector([companySelector], (state) => state);
+const getCompanies = createSelector([companySelector], (state) => state);
 
-export const func = () => {};
+export default getCompanies;

@@ -35,7 +35,9 @@ const TextInput: React.FC<Props> = ({
         cols={30}
         rows={10}
         onChange={onChange}
-        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${className}`}
+        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${
+          className || ''
+        }`}
       />
     ) : (
       <input
@@ -44,7 +46,9 @@ const TextInput: React.FC<Props> = ({
         value={value}
         id={id}
         onChange={onChange}
-        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${className}`}
+        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${
+          className || ''
+        }`}
       />
     )}
   </div>

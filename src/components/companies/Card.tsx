@@ -31,8 +31,8 @@ const Card: React.FC<Props> = ({ company }: Props) => {
     >
       <div className="flex p-4 items-center cursor-pointer">
         <div className="w-24 flex-shrink-0">
-          {company.profileImage && company.profileImage.path ? (
-            <ProfileImage path={company.profileImage.path} size="md" />
+          {company.profileImage ? (
+            <ProfileImage path={company.profileImage} size="md" />
           ) : (
             <ProfileImage path={NoImage} size="md" />
           )}
