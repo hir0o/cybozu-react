@@ -8,17 +8,18 @@ import NoImage from '../../assets/img/noimage.png';
 const companiesRef = db.collection('companies');
 
 export const fetchCompanies = () => (dispatch: Dispatch<any>) => {
-  // TODO: 降順で取得する
-  void companiesRef.get().then((snapshots) => {
-    const companyList: CompanyType[] = [];
-    // TODO: mapとかを使った方がいい
-    snapshots.forEach((snapshot) => {
-      const company: CompanyType = snapshot.data() as CompanyType;
-      companyList.push(company);
-    });
+  void companiesRef
+    .orderBy('createdAt', 'desc')
+    .get()
+    .then((snapshots) => {
+      const companyList: CompanyType[] = [];
+      snapshots.forEach((snapshot) => {
+        const company: CompanyType = snapshot.data() as CompanyType;
+        companyList.push(company);
+      });
 
-    dispatch(fetchCompaniesAction(companyList));
-  });
+      dispatch(fetchCompaniesAction(companyList));
+    });
 };
 
 export const saveCompany = (company: CompanyType) => (
