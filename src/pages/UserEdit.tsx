@@ -12,7 +12,10 @@ const UserEdit: React.FC = () => {
   const user = getUser(selector);
 
   const [username, setUserName] = useState('');
-  const [profileImage, setProfileImage] = useState<ImageType>({ path: '', id: '' });
+  const [profileImage, setProfileImage] = useState<ImageType>({
+    path: '',
+    id: '',
+  });
 
   const inputUserName = useCallback(
     (event) => {
@@ -25,13 +28,16 @@ const UserEdit: React.FC = () => {
 
   useEffect(() => {
     if (id !== '' && id !== undefined) {
-      db.collection('users').doc(id).get().then((snapshot: any) => {
-        const data = snapshot.data() as UserType;
-        setUserName(data.username);
-        if (data.profileImg !== undefined) {
-          setProfileImage(data.profileImg);
-        }
-      });
+      db.collection('users')
+        .doc(id)
+        .get()
+        .then((snapshot: any) => {
+          const data = snapshot.data() as UserType;
+          setUserName(data.username);
+          if (data.profileImg !== undefined) {
+            setProfileImage(data.profileImg);
+          }
+        });
     }
   }, [id]);
 
@@ -50,11 +56,15 @@ const UserEdit: React.FC = () => {
         />
         <button
           className="w-full bg-green-500 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-green-400"
-          onClick={() => dispatch(saveUser({
-            user,
-            username,
-            profileImage,
-          }))}
+          onClick={() =>
+            dispatch(
+              saveUser({
+                user,
+                username,
+                profileImage,
+              }),
+            )
+          }
           type="button"
         >
           登録

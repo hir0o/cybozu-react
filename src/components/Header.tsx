@@ -12,30 +12,49 @@ const Header: React.FC = () => {
   return (
     <header className="shadow-md py-5 bg-white">
       <div className="max-w-6xl mx-auto px-4 md:px-0 flex justify-around">
-        <button type="button" className="text-xl font-bold" onClick={() => dispatch(push('/companies'))}>
+        <button
+          type="button"
+          className="text-xl font-bold"
+          onClick={() => dispatch(push('/companies'))}
+        >
           超就活用会社情報プラットフォーム(仮)
         </button>
         <ul className="flex justify-around">
           {isSignedIn ? (
             <>
               <li>
-                <button type="button" onClick={() => dispatch(push('/companies'))}>企業一覧</button>
+                <button
+                  type="button"
+                  onClick={() => dispatch(push('/companies'))}
+                >
+                  企業一覧
+                </button>
               </li>
               <li className="ml-3">
-                <button type="button" onClick={() => dispatch(push('/users/edit'))}>プロフィール編集</button>
+                <button
+                  type="button"
+                  onClick={() => dispatch(push('/users/edit'))}
+                >
+                  プロフィール編集
+                </button>
               </li>
               <li className="ml-3">
-                <button type="button" onClick={() => dispatch(signOut())}>ログアウト</button>
+                <button type="button" onClick={() => dispatch(signOut())}>
+                  ログアウト
+                </button>
               </li>
             </>
-
           ) : (
             <>
               <li>
-                <button type="button" onClick={() => dispatch(push('/signup'))}>会員登録</button>
+                <button type="button" onClick={() => dispatch(push('/signup'))}>
+                  会員登録
+                </button>
               </li>
               <li className="ml-3">
-                <button type="button" onClick={() => dispatch(push('/signin'))}>ログイン</button>
+                <button type="button" onClick={() => dispatch(push('/signin'))}>
+                  ログイン
+                </button>
               </li>
             </>
           )}

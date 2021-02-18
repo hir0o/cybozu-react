@@ -8,20 +8,21 @@ const companiesRef = db.collection('companies');
 
 export const fetchCompanies = () => async (dispatch: any) => {
   // TODO: 降順で取得する
-  companiesRef.get()
-    .then((snapshots) => {
-      const companyList: CompanyType[] = [];
-      // TODO: mapとかを使った方がいい
-      snapshots.forEach((snapshot) => {
-        const company: CompanyType = snapshot.data() as CompanyType; // TODO: 無理やり
-        companyList.push(company);
-      });
-
-      dispatch(fetchCompaniesAction(companyList));
+  companiesRef.get().then((snapshots) => {
+    const companyList: CompanyType[] = [];
+    // TODO: mapとかを使った方がいい
+    snapshots.forEach((snapshot) => {
+      const company: CompanyType = snapshot.data() as CompanyType; // TODO: 無理やり
+      companyList.push(company);
     });
+
+    dispatch(fetchCompaniesAction(companyList));
+  });
 };
 
-export const saveCompany = (company: CompanyType, id: string) => async (dispatch: any) => {
+export const saveCompany = (company: CompanyType, id: string) => async (
+  dispatch: any,
+) => {
   const timestamp = FirebaseTimestamp.now().toDate();
   const data = {
     ...company,
@@ -36,10 +37,13 @@ export const saveCompany = (company: CompanyType, id: string) => async (dispatch
     data.created_at = timestamp;
   }
 
-  return companiesRef.doc(id).set(data, { merge: true })
+  return companiesRef
+    .doc(id)
+    .set(data, { merge: true })
     .then(() => {
       dispatch(push('/companies'));
-    }).catch((error) => {
+    })
+    .catch((error) => {
       throw new Error(error);
     });
 };
@@ -78,20 +82,24 @@ export const addComment = (
   } else {
     data = {
       ...company,
-      comments: [{
-        username,
-        profileImagePath: profileImagePath || NoImage,
-        comment,
-        created_at: timestamp,
-      },
+      comments: [
+        {
+          username,
+          profileImagePath: profileImagePath || NoImage,
+          comment,
+          created_at: timestamp,
+        },
       ],
     };
   }
 
-  return companiesRef.doc(id).set(data, { merge: true })
+  return companiesRef
+    .doc(id)
+    .set(data, { merge: true })
     .then(() => {
       dispatch(push(`/companies/${id}`));
-    }).catch((error) => {
+    })
+    .catch((error) => {
       throw new Error(error);
     });
 };

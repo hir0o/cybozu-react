@@ -3,12 +3,16 @@ import NoImage from '../../assets/img/noimage.png';
 import { ProfileImage } from '../UiKid';
 
 type Prop = {
-  profileImgPath: string,
-  userName: string,
-  commentText: string
+  profileImgPath: string;
+  userName: string;
+  commentText: string;
 };
 
-const CommentItem: React.FC<Prop> = ({ profileImgPath, userName, commentText }) => (
+const CommentItem: React.FC<Prop> = ({
+  profileImgPath,
+  userName,
+  commentText,
+}) => (
   <div className="flex items-center border-gray-200 border-b border-solid pb-4">
     {profileImgPath ? (
       <ProfileImage path={profileImgPath} size="sm" />

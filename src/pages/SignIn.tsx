@@ -45,9 +45,14 @@ const SignIn = () => {
         />
         <button
           className="w-full bg-green-500 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-green-400"
-          onClick={() => dispatch(signIn({
-            email, password,
-          }))}
+          onClick={() =>
+            dispatch(
+              signIn({
+                email,
+                password,
+              }),
+            )
+          }
           type="button"
         >
           ログイン

@@ -6,7 +6,7 @@ import { listenAuthState } from './reducks/users/operations';
 import { getIsSignedIn } from './reducks/users/selecors';
 
 type Prop = {
-  children: React.ReactNode,
+  children: React.ReactNode;
 };
 
 const Auth: React.FC<Prop> = ({ children }) => {
@@ -22,15 +22,7 @@ const Auth: React.FC<Prop> = ({ children }) => {
     }
   }, []);
 
-  return (
-    <>
-      {isSignedIn ? (
-        (children)
-      ) : (
-        <></>
-      )}
-    </>
-  );
+  return <>{isSignedIn ? children : <></>}</>;
 };
 
 export default Auth;

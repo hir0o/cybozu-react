@@ -2,7 +2,10 @@ import * as Actions from './actions';
 import initialState from '../store/initialState';
 import { ActionType } from './types';
 
-const CompaniesReducer = (state = initialState.companies, action: ActionType) => {
+const CompaniesReducer = (
+  state = initialState.companies,
+  action: ActionType,
+) => {
   switch (action.type) {
     case Actions.FETCH_COMPANIES:
       return {

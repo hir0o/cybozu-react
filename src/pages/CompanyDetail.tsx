@@ -10,7 +10,7 @@ import { addComment } from '../reducks/companies/operations';
 import { getUser } from '../reducks/users/selecors';
 import NoImage from '../assets/img/noimage.png';
 
-type Prop = {} & RouteComponentProps<{id: string}>;
+type Prop = {} & RouteComponentProps<{ id: string }>;
 
 const CompanyDetail: React.FC<Prop> = ({ match }) => {
   const { id } = match.params;
@@ -29,7 +29,11 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
     [setComment],
   );
 
-  const updateComment = (_comment: string, _username: string, _profileImagePath: string) => {
+  const updateComment = (
+    _comment: string,
+    _username: string,
+    _profileImagePath: string,
+  ) => {
     if (_comment === '') {
       return;
     }
@@ -58,7 +62,9 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
   };
 
   useEffect(() => {
-    db.collection('companies').doc(id).get()
+    db.collection('companies')
+      .doc(id)
+      .get()
       .then((doc: any) => {
         const data: CompanyType = doc.data();
         setCompany(data);
@@ -89,7 +95,9 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
           </div>
           <div className="ml-4">
             <h1 className="text-2xl">{company.name}</h1>
-            <p className="bg-gray-500 text-white w-12 text-center rounded-md mt-2 text-sm">{company.industry}</p>
+            <p className="bg-gray-500 text-white w-12 text-center rounded-md mt-2 text-sm">
+              {company.industry}
+            </p>
           </div>
         </div>
       </SectionBox>
@@ -104,16 +112,12 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
             <p className="text-sm mt-3">{company.hp}</p>
           </div>
           <div>
-            <h3 className="text-sm text-gray-400">
-              設立年月
-            </h3>
+            <h3 className="text-sm text-gray-400">設立年月</h3>
             {/* TODO: */}
             <p className="text-sm mt-3">2012年4月12日</p>
           </div>
           <div>
-            <h3 className="text-sm text-gray-400">
-              従業員数
-            </h3>
+            <h3 className="text-sm text-gray-400">従業員数</h3>
             {/* TODO: */}
             <p className="text-sm mt-3">300人</p>
           </div>
@@ -126,14 +130,15 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
       </SectionBox>
       <SectionBox title="コメント">
         <div className="grid grid-cols-1 gap-4 mt-4">
-          {company.comments && company.comments.map((commentItem, index) => (
-            <CommentItem
-              userName={commentItem.username}
-              profileImgPath={commentItem.profileImagePath}
-              commentText={commentItem.comment}
-              key={index}
-            />
-          ))}
+          {company.comments &&
+            company.comments.map((commentItem, index) => (
+              <CommentItem
+                userName={commentItem.username}
+                profileImgPath={commentItem.profileImagePath}
+                commentText={commentItem.comment}
+                key={index}
+              />
+            ))}
         </div>
       </SectionBox>
       <SectionBox title="コメントを残す">
@@ -150,7 +155,9 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
             <button
               className="px-8 bg-blue-400 text-white text-bold raund-md py-2 rounded-md hover:bg-blue-300"
               onClick={() => {
-                dispatch(addComment(comment, id, company, username, profileImg?.path));
+                dispatch(
+                  addComment(comment, id, company, username, profileImg?.path),
+                );
                 updateComment(comment, username, profileImg?.path);
                 deleteInput();
               }}

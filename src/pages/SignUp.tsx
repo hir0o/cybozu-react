@@ -76,9 +76,16 @@ const SignUp = () => {
         />
         <button
           className="w-full bg-green-500 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-green-400"
-          onClick={() => dispatch(signUp({
-            username, email, password, confirmPassword,
-          }))}
+          onClick={() =>
+            dispatch(
+              signUp({
+                username,
+                email,
+                password,
+                confirmPassword,
+              }),
+            )
+          }
           type="button"
         >
           登録する
@@ -90,7 +97,6 @@ const SignUp = () => {
           onClick={() => dispatch(googleLogin())}
         >
           Googleアカウントで登録
-
         </button>
       </div>
     </div>

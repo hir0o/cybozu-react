@@ -6,7 +6,9 @@ import { saveCompany } from '../reducks/companies/operations';
 import { CompanyType, ImageType } from '../reducks/companies/types';
 
 const CompanyEdit: React.FC = () => {
-  const id: string | undefined = window.location.pathname.split('/companies/edit/')[1];
+  const id: string | undefined = window.location.pathname.split(
+    '/companies/edit/',
+  )[1];
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -14,7 +16,10 @@ const CompanyEdit: React.FC = () => {
   const [hp, setHp] = useState('');
   const [industry, setIndustry] = useState('');
   const [location, setLocation] = useState('');
-  const [profileImage, setProfileImage] = useState<ImageType>({ path: '', id: '' });
+  const [profileImage, setProfileImage] = useState<ImageType>({
+    path: '',
+    id: '',
+  });
   const [staffNumber, setStaffNumber] = useState(0);
   const [startDate, setStartDate] = useState('');
 
@@ -63,19 +68,22 @@ const CompanyEdit: React.FC = () => {
 
   useEffect(() => {
     if (id !== '' && id !== undefined) {
-      db.collection('companies').doc(id).get().then((snapshot) => {
-        const data = snapshot.data() as CompanyType;
-        setName(data.name);
-        setDescription(data.description);
-        setHp(data.hp);
-        setIndustry(data.industry);
-        setLocation(data.location);
-        if (data.profileImage !== undefined) {
-          setProfileImage(data.profileImage);
-        }
-        setStaffNumber(data.staffNumber);
-        setStartDate(data.startDate);
-      });
+      db.collection('companies')
+        .doc(id)
+        .get()
+        .then((snapshot) => {
+          const data = snapshot.data() as CompanyType;
+          setName(data.name);
+          setDescription(data.description);
+          setHp(data.hp);
+          setIndustry(data.industry);
+          setLocation(data.location);
+          if (data.profileImage !== undefined) {
+            setProfileImage(data.profileImage);
+          }
+          setStaffNumber(data.staffNumber);
+          setStartDate(data.startDate);
+        });
     }
   }, [id]);
 
@@ -142,16 +150,23 @@ const CompanyEdit: React.FC = () => {
         />
         <button
           className="w-full bg-green-500 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-green-400"
-          onClick={() => dispatch(saveCompany({
-            name,
-            description,
-            profileImage,
-            hp,
-            industry,
-            location,
-            staffNumber,
-            startDate,
-          }, id))}
+          onClick={() =>
+            dispatch(
+              saveCompany(
+                {
+                  name,
+                  description,
+                  profileImage,
+                  hp,
+                  industry,
+                  location,
+                  staffNumber,
+                  startDate,
+                },
+                id,
+              ),
+            )
+          }
           type="button"
         >
           登録
