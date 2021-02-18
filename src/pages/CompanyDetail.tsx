@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import HTMLReactParser from 'html-react-parser';
 import { RouteComponentProps } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'connected-react-router';
 import { CompanyType } from '../reducks/companies/types';
 import { db } from '../firebase/index';
 import { TextInput, ProfileImage } from '../components/UiKid/index';
@@ -88,6 +89,14 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
 
   return (
     <div className="mx-4 mb-8">
+      <div className="text-right max-w-4xl mx-auto mt-8">
+        <button
+          type="button"
+          onClick={() => dispatch(push(`/companies/edit/${company.id || ''}`))}
+        >
+          編集
+        </button>
+      </div>
       <SectionBox>
         <div className="flex items-center">
           <div className="w-24 h-24">

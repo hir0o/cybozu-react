@@ -34,6 +34,14 @@ const Header: React.FC = () => {
               <li className="ml-3">
                 <button
                   type="button"
+                  onClick={() => dispatch(push('/companies/edit'))}
+                >
+                  企業情報登録
+                </button>
+              </li>
+              <li className="ml-3">
+                <button
+                  type="button"
                   onClick={() => dispatch(push('/users/edit'))}
                 >
                   プロフィール編集
