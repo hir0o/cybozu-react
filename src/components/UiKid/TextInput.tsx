@@ -1,22 +1,32 @@
 import React from 'react';
 
 type Props = {
-  inputType: string,
-  placeholder: string,
-  value: string | number,
-  className?: string,
-  id: string,
-  label?: string,
-  onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  inputType: string;
+  placeholder: string;
+  value: string | number;
+  className?: string;
+  id: string;
+  label?: string;
+  onChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
 };
 
 const TextInput: React.FC<Props> = ({
-  inputType, placeholder, value, onChange, className, id, label,
+  inputType,
+  placeholder,
+  value,
+  onChange,
+  className,
+  id,
+  label,
 }) => (
   <div>
-    {label ? (
-      <label className="text-gray-700" htmlFor={id}>{label}</label>
-    ) : ''}
+    {label && (
+      <label className="text-gray-700" htmlFor={id}>
+        {label}
+      </label>
+    )}
     {inputType === 'textarea' ? (
       <textarea
         placeholder={placeholder}
