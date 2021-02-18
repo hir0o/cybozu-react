@@ -3,10 +3,12 @@ import { useDispatch } from 'react-redux';
 import { TextInput, ImgInput } from '../components/UiKid/index';
 import { db } from '../firebase';
 import { saveCompany } from '../reducks/companies/operations';
-import { CompanyType, ImageType } from '../reducks/companies/types';
+import { CompanyType } from '../reducks/companies/types';
 
 const CompanyEdit: React.FC = () => {
-  const id: string | undefined = window.location.pathname.split('/companies/edit/')[1];
+  const id: string | undefined = window.location.pathname.split(
+    '/companies/edit/',
+  )[1];
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -14,48 +16,48 @@ const CompanyEdit: React.FC = () => {
   const [hp, setHp] = useState('');
   const [industry, setIndustry] = useState('');
   const [location, setLocation] = useState('');
-  const [profileImage, setProfileImage] = useState<ImageType>({ path: '', id: '' });
+  const [profileImage, setProfileImage] = useState('');
   const [staffNumber, setStaffNumber] = useState(0);
   const [startDate, setStartDate] = useState('');
 
   const inputName = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setName(event.target.value);
     },
     [setName],
   );
   const inputDescription = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setDescription(event.target.value);
     },
     [setDescription],
   );
   const inputHp = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setHp(event.target.value);
     },
     [setHp],
   );
   const inputIndustry = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setIndustry(event.target.value);
     },
     [setIndustry],
   );
   const inputLocation = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setLocation(event.target.value);
     },
     [setLocation],
   );
   const inputStaffNumber = useCallback(
-    (event) => {
-      setStaffNumber(event.target.value);
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setStaffNumber(Number(event.target.value));
     },
     [setStaffNumber],
   );
   const inputStartDate = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setStartDate(event.target.value);
     },
     [setStartDate],
@@ -63,19 +65,23 @@ const CompanyEdit: React.FC = () => {
 
   useEffect(() => {
     if (id !== '' && id !== undefined) {
-      db.collection('companies').doc(id).get().then((snapshot) => {
-        const data = snapshot.data() as CompanyType;
-        setName(data.name);
-        setDescription(data.description);
-        setHp(data.hp);
-        setIndustry(data.industry);
-        setLocation(data.location);
-        if (data.profileImage !== undefined) {
-          setProfileImage(data.profileImage);
-        }
-        setStaffNumber(data.staffNumber);
-        setStartDate(data.startDate);
-      });
+      void db
+        .collection('companies')
+        .doc(id)
+        .get()
+        .then((snapshot) => {
+          const data = snapshot.data() as CompanyType;
+          setName(data.name);
+          setDescription(data.description);
+          setHp(data.hp);
+          setIndustry(data.industry);
+          setLocation(data.location);
+          if (data.profileImage !== undefined) {
+            setProfileImage(data.profileImage);
+          }
+          setStaffNumber(data.staffNumber);
+          setStartDate(data.startDate);
+        });
     }
   }, [id]);
 
@@ -142,16 +148,21 @@ const CompanyEdit: React.FC = () => {
         />
         <button
           className="w-full bg-green-500 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-green-400"
-          onClick={() => dispatch(saveCompany({
-            name,
-            description,
-            profileImage,
-            hp,
-            industry,
-            location,
-            staffNumber,
-            startDate,
-          }, id))}
+          onClick={() =>
+            dispatch(
+              saveCompany({
+                id,
+                name,
+                description,
+                profileImage,
+                hp,
+                industry,
+                location,
+                staffNumber,
+                startDate,
+              }),
+            )
+          }
           type="button"
         >
           登録

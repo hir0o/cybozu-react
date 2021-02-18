@@ -14,25 +14,25 @@ const SignUp = () => {
 
   // 関数のメモ化
   const inputUsername = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setUsername(event.target.value);
     },
     [setUsername],
   );
   const inputEmail = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setEmail(event.target.value);
     },
     [setEmail],
   );
   const inputPassword = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setPassword(event.target.value);
     },
     [setPassword],
   );
   const inputConfirmPassword = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setConfirmPassword(event.target.value);
     },
     [setConfirmPassword],
@@ -76,9 +76,16 @@ const SignUp = () => {
         />
         <button
           className="w-full bg-green-500 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-green-400"
-          onClick={() => dispatch(signUp({
-            username, email, password, confirmPassword,
-          }))}
+          onClick={() =>
+            dispatch(
+              signUp({
+                username,
+                email,
+                password,
+                confirmPassword,
+              }),
+            )
+          }
           type="button"
         >
           登録する
@@ -90,7 +97,6 @@ const SignUp = () => {
           onClick={() => dispatch(googleLogin())}
         >
           Googleアカウントで登録
-
         </button>
       </div>
     </div>

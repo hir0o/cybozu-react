@@ -11,13 +11,13 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
 
   const inputEmail = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setEmail(event.target.value);
     },
     [setEmail],
   );
   const inputPassword = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setPassword(event.target.value);
     },
     [setPassword],
@@ -45,9 +45,14 @@ const SignIn = () => {
         />
         <button
           className="w-full bg-green-500 text-white text-bold raund-md py-2 px-3 rounded-md hover:bg-green-400"
-          onClick={() => dispatch(signIn({
-            email, password,
-          }))}
+          onClick={() =>
+            dispatch(
+              signIn({
+                email,
+                password,
+              }),
+            )
+          }
           type="button"
         >
           ログイン

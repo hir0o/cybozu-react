@@ -8,7 +8,7 @@ import NoImage from '../../assets/img/noimage.png';
 const MAX_LENGTH = 55;
 
 type Props = {
-  company: CompanyType
+  company: CompanyType;
 };
 
 const Card: React.FC<Props> = ({ company }: Props) => {
@@ -19,15 +19,20 @@ const Card: React.FC<Props> = ({ company }: Props) => {
     if (text.length < MAX_LENGTH || text === undefined) {
       return text;
     }
+
     return `${text.substr(0, MAX_LENGTH)}...`;
   };
 
   return (
-    <button type="button" onClick={() => dispatch(push(`/companies/${company.id}`))} className="bg-white rounded-md shadow-sm hover:shadow-lg transition-shadow text-left border-t-4 border-blue-400 border-solid">
+    <button
+      type="button"
+      onClick={() => dispatch(push(`/companies/${company.id}`))}
+      className="bg-white rounded-md shadow-sm hover:shadow-lg transition-shadow text-left border-t-4 border-blue-400 border-solid"
+    >
       <div className="flex p-4 items-center cursor-pointer">
         <div className="w-24 flex-shrink-0">
-          {company.profileImage && company.profileImage.path ? (
-            <ProfileImage path={company.profileImage.path} size="md" />
+          {company.profileImage ? (
+            <ProfileImage path={company.profileImage} size="md" />
           ) : (
             <ProfileImage path={NoImage} size="md" />
           )}

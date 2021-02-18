@@ -1,7 +1,5 @@
 import React from 'react';
 
-const PrimaryButton = () => (
-  <button type="button">ボタン</button>
-);
+const PrimaryButton: React.FC = () => <button type="button">ボタン</button>;
 
 export default PrimaryButton;
