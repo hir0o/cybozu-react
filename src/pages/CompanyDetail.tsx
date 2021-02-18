@@ -69,6 +69,7 @@ const CompanyDetail: React.FC<Prop> = ({ match }) => {
       .get()
       .then((doc) => {
         const data = doc.data() as CompanyType;
+
         setCompany(data);
       });
   }, [id]);

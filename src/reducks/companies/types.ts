@@ -22,7 +22,7 @@ export type CompanyType = {
   staffNumber: number;
   profileImage?: string;
   comments?: CommentType[];
-  id: string;
+  id?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

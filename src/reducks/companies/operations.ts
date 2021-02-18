@@ -27,10 +27,11 @@ export const saveCompany = (company: CompanyType) => (
   const timestamp = FirebaseTimestamp.now().toDate();
   const data = {
     ...company,
-    updated_at: timestamp,
+    updatedAt: timestamp,
   };
 
   const { id } = company;
+
   // editじゃなかったら，
   if (id === '' || id === undefined) {
     // firebaseで自動付与されるidを取得
@@ -40,7 +41,7 @@ export const saveCompany = (company: CompanyType) => (
   }
 
   return companiesRef
-    .doc(id)
+    .doc(data.id)
     .set(data, { merge: true })
     .then(() => {
       dispatch(push('/companies'));
