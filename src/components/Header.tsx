@@ -18,7 +18,7 @@ const Header: React.FC = () => {
           className="text-xl font-bold"
           onClick={() => dispatch(push('/companies'))}
         >
-          超就活用会社情報プラットフォーム(仮)
+          会社情報プラットフォーム
         </button>
         <ul className="flex justify-around">
           {isSignedIn ? (
