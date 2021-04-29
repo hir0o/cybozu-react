@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TextInput, ImgInput } from '../components/UiKid/index';
 import { db } from '../firebase';
 import { saveCompany } from '../reducks/companies/operations';
 import { CompanyType } from '../reducks/companies/types';
+import { useForm } from '../curtomhook';
 
 const CompanyEdit: React.FC = () => {
   const id: string | undefined = window.location.pathname.split(
@@ -11,57 +12,14 @@ const CompanyEdit: React.FC = () => {
   )[1];
   const dispatch = useDispatch();
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [hp, setHp] = useState('');
-  const [industry, setIndustry] = useState('');
-  const [location, setLocation] = useState('');
+  const [name, setName, inputName] = useForm('');
+  const [description, setDescription, inputDescription] = useForm('');
+  const [hp, setHp, inputHp] = useForm('');
+  const [industry, setIndustry, inputIndustry] = useForm('');
+  const [location, setLocation, inputLocation] = useForm('');
   const [profileImage, setProfileImage] = useState('');
-  const [staffNumber, setStaffNumber] = useState(0);
-  const [startDate, setStartDate] = useState('');
-
-  const inputName = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setName(event.target.value);
-    },
-    [setName],
-  );
-  const inputDescription = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setDescription(event.target.value);
-    },
-    [setDescription],
-  );
-  const inputHp = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setHp(event.target.value);
-    },
-    [setHp],
-  );
-  const inputIndustry = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setIndustry(event.target.value);
-    },
-    [setIndustry],
-  );
-  const inputLocation = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setLocation(event.target.value);
-    },
-    [setLocation],
-  );
-  const inputStaffNumber = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setStaffNumber(Number(event.target.value));
-    },
-    [setStaffNumber],
-  );
-  const inputStartDate = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setStartDate(event.target.value);
-    },
-    [setStartDate],
-  );
+  const [staffNumber, setStaffNumber, inputStaffNumber] = useForm('0');
+  const [startDate, setStartDate, inputStartDate] = useForm('');
 
   useEffect(() => {
     if (id !== '' && id !== undefined) {
@@ -79,7 +37,7 @@ const CompanyEdit: React.FC = () => {
           if (data.profileImage !== undefined) {
             setProfileImage(data.profileImage);
           }
-          setStaffNumber(data.staffNumber);
+          setStaffNumber(`${data.staffNumber}`);
           setStartDate(data.startDate);
         });
     }
@@ -158,7 +116,7 @@ const CompanyEdit: React.FC = () => {
                 hp,
                 industry,
                 location,
-                staffNumber,
+                staffNumber: Number(staffNumber),
                 startDate,
               }),
             )
